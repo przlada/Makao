@@ -14,7 +14,7 @@ public class JMakao {
 	    	Serwer s = new Serwer(4321);
 	    }
 	    else{
-	    	Klient k = new Klient(4321, "localhost");
+	    	Klient k = new Klient(4321, "10.0.0.52");
 	    	k.start();
 	    	for(int i=0; i<10; i++){
 	    		k.wyslij(i+": DZIALA KLIENT "+info);
