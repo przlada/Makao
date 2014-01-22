@@ -71,7 +71,7 @@ public class MainView extends JFrame implements ActionListener{
 		JPanel leftPlayer = new JPanel(new GridBagLayout());
 		leftPlayer.setBackground(new Color(12,176,50));
 		JButton leftPlayerCard = new JButton();
-		leftPlayerCard.setIcon(MakaoStatic.CARD_ICONS[0][0]);
+		leftPlayerCard.setIcon(MakaoStatic.CARD_BACK);
 		leftPlayerCard.setPreferredSize(new Dimension(73, 98));
 		leftPlayer.add(leftPlayerCard);
 		panel.add(leftPlayer, BorderLayout.WEST);
@@ -79,7 +79,7 @@ public class MainView extends JFrame implements ActionListener{
 		JPanel rightPlayer = new JPanel(new GridBagLayout());
 		rightPlayer.setBackground(new Color(12,176,50));
 		JButton rightPlayerCard = new JButton();
-		rightPlayerCard.setIcon(MakaoStatic.CARD_ICONS[0][0]);
+		rightPlayerCard.setIcon(MakaoStatic.CARD_BACK);
 		rightPlayerCard.setPreferredSize(new Dimension(73, 98));
 		rightPlayer.add(rightPlayerCard);
 		panel.add(rightPlayer, BorderLayout.EAST);
@@ -87,7 +87,7 @@ public class MainView extends JFrame implements ActionListener{
 		JPanel topPlayer = new JPanel(new GridBagLayout());
 		topPlayer.setBackground(new Color(12,176,50));
 		JButton topPlayerCard = new JButton();
-		topPlayerCard.setIcon(MakaoStatic.CARD_ICONS[0][0]);
+		topPlayerCard.setIcon(MakaoStatic.CARD_BACK);
 		topPlayerCard.setPreferredSize(new Dimension(73, 98));
 		topPlayer.add(topPlayerCard);
 		panel.add(topPlayer, BorderLayout.NORTH);
