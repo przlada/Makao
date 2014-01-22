@@ -27,6 +27,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import makao.MakaoStatic;
+
 
 
 
@@ -37,7 +39,7 @@ public class MainView extends JFrame implements ActionListener{
 	public MainView() {
 		//super("Makao");
 		setTitle("Makao");
-		setSize(800, 600);
+		setSize(MakaoStatic.MAIN_FRAME_SIZE);
 		setLocationRelativeTo(null);
 		//setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -51,17 +53,13 @@ public class MainView extends JFrame implements ActionListener{
 		
 		
 		JPanel centerDecks = new JPanel();
-		centerDecks.setPreferredSize(new Dimension(150, 100));
+		centerDecks.setPreferredSize(new Dimension(160, 110));
 		JButton deckNew = new JButton();
-		JButton deckOld = new JButton("karta ");
-		deckNew.setPreferredSize(new Dimension(70, 80));
-		File imageFile = new File("images/card.png");
-		 try {
-			    Image img = ImageIO.read(imageFile);
-			    deckNew.setIcon(new ImageIcon(img));
-		 } catch (IOException ex) {}
-		// deckNew.setMargin(new Insets(0, 0, 0, 0));
-		deckOld.setPreferredSize(new Dimension(70, 80));
+		JButton deckOld = new JButton();
+		deckNew.setPreferredSize(new Dimension(73, 98));
+		deckOld.setPreferredSize(new Dimension(73, 98));
+		deckNew.setIcon(MakaoStatic.CARD_ICONS[0][0]);
+		deckOld.setIcon(MakaoStatic.CARD_BACK);
 		centerDecks.add(deckNew);
 		centerDecks.add(deckOld);
 		JPanel centerPanelConstrain = new JPanel(new GridBagLayout());
@@ -72,22 +70,25 @@ public class MainView extends JFrame implements ActionListener{
 		
 		JPanel leftPlayer = new JPanel(new GridBagLayout());
 		leftPlayer.setBackground(new Color(12,176,50));
-		JButton leftPlayerCard = new JButton("karta ");
-		leftPlayerCard.setPreferredSize(new Dimension(70, 80));
+		JButton leftPlayerCard = new JButton();
+		leftPlayerCard.setIcon(MakaoStatic.CARD_ICONS[0][0]);
+		leftPlayerCard.setPreferredSize(new Dimension(73, 98));
 		leftPlayer.add(leftPlayerCard);
 		panel.add(leftPlayer, BorderLayout.WEST);
 		
 		JPanel rightPlayer = new JPanel(new GridBagLayout());
 		rightPlayer.setBackground(new Color(12,176,50));
-		JButton rightPlayerCard = new JButton("karta ");
-		rightPlayerCard.setPreferredSize(new Dimension(70, 80));
+		JButton rightPlayerCard = new JButton();
+		rightPlayerCard.setIcon(MakaoStatic.CARD_ICONS[0][0]);
+		rightPlayerCard.setPreferredSize(new Dimension(73, 98));
 		rightPlayer.add(rightPlayerCard);
 		panel.add(rightPlayer, BorderLayout.EAST);
 		
 		JPanel topPlayer = new JPanel(new GridBagLayout());
 		topPlayer.setBackground(new Color(12,176,50));
-		JButton topPlayerCard = new JButton("karta ");
-		topPlayerCard.setPreferredSize(new Dimension(70, 80));
+		JButton topPlayerCard = new JButton();
+		topPlayerCard.setIcon(MakaoStatic.CARD_ICONS[0][0]);
+		topPlayerCard.setPreferredSize(new Dimension(73, 98));
 		topPlayer.add(topPlayerCard);
 		panel.add(topPlayer, BorderLayout.NORTH);
 		
@@ -132,14 +133,15 @@ public class MainView extends JFrame implements ActionListener{
 		
 		JPanel cardDock = new JPanel();
 		cardDock.setBackground(new Color(0,0,0));
-		for(int i=0; i<15; i++){
-			JButton but = new JButton("karta "+i);
-			but.setPreferredSize(new Dimension(70, 80));
-			cardDock.add(but);			
+		for(int i=0; i<13; i++){
+			JButton but = new JButton();
+			but.setPreferredSize(new Dimension(73, 98));
+			but.setIcon(MakaoStatic.CARD_ICONS[0][i]);
+			cardDock.add(but);		
 		}
 		JScrollPane cardDockScroll = new JScrollPane(cardDock);
 		cardDock.setAutoscrolls(true);
-		cardDockScroll.setPreferredSize(new Dimension(0,110));
+		cardDockScroll.setPreferredSize(new Dimension(0,133));
 		mainPanel.add(cardDockScroll, BorderLayout.SOUTH);
 		
 		
