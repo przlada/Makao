@@ -1,9 +1,13 @@
 package makao;
 import java.util.Scanner;
 
+import makao.view.MainView;
+
 public class JMakao {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		MainView main = new MainView();
+		main.setVisible(true);
 		System.out.println("SERWER CZY KLIENT?");
 		Scanner sc = new Scanner (System.in);
 	    String info = sc.nextLine();
