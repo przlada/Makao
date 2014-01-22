@@ -6,17 +6,12 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Insets;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -37,18 +32,15 @@ public class MainView extends JFrame implements ActionListener{
 	private JTextField chatTextField;
 	
 	public MainView() {
-		//super("Makao");
 		setTitle("Makao");
 		setSize(MakaoStatic.MAIN_FRAME_SIZE);
 		setLocationRelativeTo(null);
-		//setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		Container mainPanel = getContentPane();
 		mainPanel.setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
-		//panel.setPreferredSize(new Dimension(600, 0));
 		
-		panel.setBackground(new Color(12,176,50));
+		panel.setBackground(MakaoStatic.BACKGROUND_GREEN);
 		panel.setLayout(new BorderLayout());
 		
 		
@@ -56,39 +48,40 @@ public class MainView extends JFrame implements ActionListener{
 		centerDecks.setPreferredSize(new Dimension(160, 110));
 		JButton deckNew = new JButton();
 		JButton deckOld = new JButton();
-		deckNew.setPreferredSize(new Dimension(73, 98));
-		deckOld.setPreferredSize(new Dimension(73, 98));
+		deckNew.setPreferredSize(MakaoStatic.CARD_SIZE);
+		deckOld.setPreferredSize(MakaoStatic.CARD_SIZE);
 		deckNew.setIcon(MakaoStatic.CARD_ICONS[0][0]);
 		deckOld.setIcon(MakaoStatic.CARD_BACK);
 		centerDecks.add(deckNew);
 		centerDecks.add(deckOld);
+		centerDecks.setBackground(MakaoStatic.BACKGROUND_GREEN);
 		JPanel centerPanelConstrain = new JPanel(new GridBagLayout());
-		centerPanelConstrain.setBackground(new Color(12,176,50));
+		centerPanelConstrain.setBackground(MakaoStatic.BACKGROUND_GREEN);
 		centerPanelConstrain.add(centerDecks);
 		panel.add(centerPanelConstrain, BorderLayout.CENTER);
 		
 		
 		JPanel leftPlayer = new JPanel(new GridBagLayout());
-		leftPlayer.setBackground(new Color(12,176,50));
+		leftPlayer.setBackground(MakaoStatic.BACKGROUND_GREEN);
 		JButton leftPlayerCard = new JButton();
 		leftPlayerCard.setIcon(MakaoStatic.CARD_BACK);
-		leftPlayerCard.setPreferredSize(new Dimension(73, 98));
+		leftPlayerCard.setPreferredSize(MakaoStatic.CARD_SIZE);
 		leftPlayer.add(leftPlayerCard);
 		panel.add(leftPlayer, BorderLayout.WEST);
 		
 		JPanel rightPlayer = new JPanel(new GridBagLayout());
-		rightPlayer.setBackground(new Color(12,176,50));
+		rightPlayer.setBackground(MakaoStatic.BACKGROUND_GREEN);
 		JButton rightPlayerCard = new JButton();
 		rightPlayerCard.setIcon(MakaoStatic.CARD_BACK);
-		rightPlayerCard.setPreferredSize(new Dimension(73, 98));
+		rightPlayerCard.setPreferredSize(MakaoStatic.CARD_SIZE);
 		rightPlayer.add(rightPlayerCard);
 		panel.add(rightPlayer, BorderLayout.EAST);
 		
 		JPanel topPlayer = new JPanel(new GridBagLayout());
-		topPlayer.setBackground(new Color(12,176,50));
+		topPlayer.setBackground(MakaoStatic.BACKGROUND_GREEN);
 		JButton topPlayerCard = new JButton();
 		topPlayerCard.setIcon(MakaoStatic.CARD_BACK);
-		topPlayerCard.setPreferredSize(new Dimension(73, 98));
+		topPlayerCard.setPreferredSize(MakaoStatic.CARD_SIZE);
 		topPlayer.add(topPlayerCard);
 		panel.add(topPlayer, BorderLayout.NORTH);
 		
@@ -111,31 +104,30 @@ public class MainView extends JFrame implements ActionListener{
 		chatTextAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		//chatTextAreaScroll.setPreferredSize(new Dimension(180,200));
 		JPanel chatControll = new JPanel();
-		chatControll.setLayout(new GridLayout(2, 1));
+		chatControll.setLayout(new GridLayout(4, 0));
 		//chatControll.setLayout(new BoxLayout(chatControll, BoxLayout.Y_AXIS));
 		chatTextField = new JTextField(20);
 		JButton sendButton = new JButton("Wyælij");
+		JButton makaoButton = new JButton("MAKAO");
+		JButton endTurnButton = new JButton("ZAKOÁCZ KOLEJK¢");
 		sendButton.addActionListener(this);
 		chatControll.add(chatTextField);
 		chatControll.add(sendButton);
+		chatControll.add(makaoButton);
+		chatControll.add(endTurnButton);
 		
 		
         chatPanel.add(chatTextAreaScroll, BorderLayout.CENTER);
         chatPanel.add(chatControll, BorderLayout.SOUTH);
-        //chatPanel.add(sendButton, BorderLayout.AFTER_LAST_LINE);
- 
-		
-		
-		//chatTextAreaScroll, BorderLayout.CENTER);
-		//chatPanel.add(chatTextField, BorderLayout.SOUTH);
 		
 		mainPanel.add(chatPanel, BorderLayout.EAST);
 		
-		JPanel cardDock = new JPanel();
+		CardDeckPanel cardDock = new CardDeckPanel();
+		cardDock.setBackgroundImage(MakaoStatic.CARD_DOCK_BACKGROUND_IMAGE);
 		cardDock.setBackground(new Color(0,0,0));
 		for(int i=0; i<13; i++){
 			JButton but = new JButton();
-			but.setPreferredSize(new Dimension(73, 98));
+			but.setPreferredSize(MakaoStatic.CARD_SIZE);
 			but.setIcon(MakaoStatic.CARD_ICONS[0][i]);
 			cardDock.add(but);		
 		}
@@ -144,39 +136,42 @@ public class MainView extends JFrame implements ActionListener{
 		cardDockScroll.setPreferredSize(new Dimension(0,133));
 		mainPanel.add(cardDockScroll, BorderLayout.SOUTH);
 		
-		
-		
-		
 
-		//JButton quitButton = new JButton("Quit");
-		//quitButton.setPreferredSize(new Dimension(200, 100));
-		//quitButton.setBounds(50, 60, 80, 30);
-
-		//quitButton.addActionListener(new ActionListener() {
-			//public void actionPerformed(ActionEvent event) {
-				//System.exit(0);
-			//}
-		//});
-
-		//panel.add(quitButton, BorderLayout.CENTER);
-		
-		
 		JMenuBar menubar = new JMenuBar();
         //ImageIcon icon = new ImageIcon(getClass().getResource("exit.png"));
 
-        JMenu file = new JMenu("File");
+        JMenu file = new JMenu("GRA");
         file.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem eMenuItem = new JMenuItem("Exit", null);
+        JMenuItem eMenuItem2 = new JMenuItem("Po¸ˆcz", null);
+        JMenuItem eMenuItem3 = new JMenuItem("Server", null);
         eMenuItem.setMnemonic(KeyEvent.VK_E);
         eMenuItem.setToolTipText("Exit application");
+        eMenuItem2.setToolTipText("Po¸ˆcz si« z serwerem gry");
+        eMenuItem3.setToolTipText("Konfiguruj w¸asny server");
+        eMenuItem2.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent event) {
+        		ConnectToServerDialog ad = new ConnectToServerDialog();
+                ad.setVisible(true);
+            }
+        });
+        eMenuItem3.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent event) {
+        		ServerConfigDialog ad = new ServerConfigDialog();
+                ad.setVisible(true);
+            }
+        });
         eMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 System.exit(0);
             }
         });
 
+        file.add(eMenuItem2);
+        file.add(eMenuItem3);
         file.add(eMenuItem);
+        
 
         menubar.add(file);
 

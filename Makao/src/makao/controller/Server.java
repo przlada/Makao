@@ -1,4 +1,4 @@
-package makao;
+package makao.controller;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
