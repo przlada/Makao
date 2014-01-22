@@ -1,25 +1,30 @@
 package makao;
-
 import java.util.Scanner;
 
 public class JMakao {
-
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("SERWER CZY KLIENT?");
 		Scanner sc = new Scanner (System.in);
 	    String info = sc.nextLine();
 	    System.out.println(info);
+
 	    if(info.equals("s")){
-	    	Serwer s = new Serwer(4321);
+	    	Server server = new Server(3456);
+	    	server.startServer();
 	    }
 	    else{
-	    	Klient k = new Klient(4321, "10.0.0.52");
-	    	k.start();
-	    	for(int i=0; i<10; i++){
-	    		k.wyslij(i+": DZIALA KLIENT "+info);
+	    	Client client = new Client("localhost", 3456);
+	    	System.out.println(client.connect());
+	    	while(!info.equals("q")){
+	    		info = sc.nextLine();
+	    		client.send(info);
+	    		System.out.println(client.getMessage());
 	    	}
+	    	System.out.println("Disconnect");
+	    	client.disconnect();
 	    }
+	    
 		
 	}
 
