@@ -3,6 +3,8 @@ package makao.controller;
 import java.util.concurrent.BlockingQueue;
 
 import makao.MakaoStatic;
+import makao.model.Model;
+import makao.model.ModelDummy;
 import makao.view.View;
 import makao.view.actions.MakaoActions;
 
@@ -12,12 +14,14 @@ public class Controller extends Thread{
 	private final BlockingQueue<MakaoActions> actionQueue;
 	private Server server;
 	private Client client;
+	private Model model;
 	
-	public Controller(View view, BlockingQueue<MakaoActions> actionQueue){
+	public Controller(View view, Model model, BlockingQueue<MakaoActions> actionQueue){
 		this.view = view;
 		this.actionQueue = actionQueue;
+		this.model = model;
 		server = new Server(MakaoStatic.PORT_NUMBER, this);
-		client = new Client(MakaoStatic.PORT_NUMBER);
+		client = new Client(MakaoStatic.PORT_NUMBER, this);
 	}
 	public void run()
 	{
@@ -60,6 +64,15 @@ public class Controller extends Thread{
 	}
 	public void appendMessage(String message){
 		view.addTextMessage(message);
+	}
+	public void paddModelDummyToView(ModelDummy dummy){
+		view.addTextMessage(dummy.getMessage());
+	}
+	public void passModelDummy(ModelDummy dummy){
+		server.sendMessageToClients(dummy);
+	}
+	public void passActionToModel(String message){
+		model.doStrategy(message);
 	}
 	
 }

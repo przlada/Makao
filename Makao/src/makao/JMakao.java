@@ -23,7 +23,9 @@ public class JMakao {
 		*/
 		final BlockingQueue<MakaoActions> actionQueue = new LinkedBlockingQueue<MakaoActions>();
 		View view = new View(actionQueue);
-		Controller controller = new Controller(view, actionQueue);
+		Model model = new Model();
+		Controller controller = new Controller(view, model, actionQueue);
+		model.setController(controller);
 		controller.start();
 		//while(true){}
 		

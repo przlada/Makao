@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import makao.model.ModelDummy;
+
 public class Client {
 	 private Socket socket; 
 	 private final int port;
@@ -14,10 +16,11 @@ public class Client {
 	 private ObjectInputStream in;
 	 private ObjectOutputStream out;
 	 private final BlockingQueue<String> messages = new LinkedBlockingQueue<>();
+	 private Controller controller;
 	 
-	 public Client(int port){
+	 public Client(int port, Controller controller){
 		 this.port = port;
-		 //this.host = host;
+		 this.controller = controller;
 	 }
 	 public void setHost(String host){
 		 this.host = host;
@@ -44,6 +47,18 @@ public class Client {
 					} catch (Exception e) {
 						disconnect();
 					}
+				}
+			 }
+		 }.start();
+		 new Thread(){
+			 public void run(){
+				while (connected) {
+					try {
+						String msg =  messages.take();
+						ModelDummy dummy = new ModelDummy();
+						dummy.setMessage(msg);
+						controller.paddModelDummyToView(dummy);
+					} catch (Exception e) {}
 				}
 			 }
 		 }.start();
@@ -79,7 +94,9 @@ public class Client {
 				 
 			 }
 	 }
+	 
 	 /** Pobieranie wiadomosci od serwera. Czeka az pojawi si« wiadomosc */
+	 /*
 	 public String getMessage(){
 		 try{
 			 return messages.take();
@@ -87,5 +104,6 @@ public class Client {
 		 	return null;
 		 }
 	 }
+	 */
 	 
 }

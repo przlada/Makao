@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import makao.model.ModelDummy;
 import makao.view.actions.MakaoActions;
 
 public class Server {
@@ -36,9 +37,8 @@ public class Server {
 				while (true) {
 					try {
 						String message = messages.take();
-						System.out.println(message);
-						controller.appendMessage(message);
-						//sendMessageToClients(message);
+						//System.out.println(message);
+						controller.passActionToModel(message);
 					} catch (InterruptedException ex) {
 
 					}
@@ -83,6 +83,14 @@ public class Server {
 			for (ClientConnection client : clients.values()){
 				System.out.println("KLIENT "+client.id);
 				client.sendMessage(message);
+			}
+		}
+	}
+	public void sendMessageToClients(ModelDummy dummy){
+		synchronized (clients) {
+			for (ClientConnection client : clients.values()){
+				System.out.println("KLIENT "+client.id);
+				client.sendMessage(dummy.getMessage());
 			}
 		}
 	}
