@@ -1,6 +1,7 @@
 package makao.model;
 
 import makao.controller.Controller;
+import makao.model.TextMessage.Type;
 
 public class Model {
 	private Controller controller;
@@ -12,8 +13,9 @@ public class Model {
 	}
 	public void doStrategy(String message){
 		System.out.print(message);
+		TextMessage msg = new TextMessage(Type.CHAT_MESSAGE, "autor", message);
 		ModelDummy dummy = new ModelDummy();
-		dummy.setMessage(message);
+		dummy.addTekstMessages(msg);
 		controller.passModelDummy(dummy);
 	}
 }

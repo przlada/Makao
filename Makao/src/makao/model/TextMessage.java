@@ -1,6 +1,8 @@
 package makao.model;
 
-public class TextMessage {
+import java.io.Serializable;
+
+public class TextMessage implements Serializable {
 	public enum Type {
 		CHAT_MESSAGE, SERVER_MESSAGE;
 	}

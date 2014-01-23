@@ -11,11 +11,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import makao.model.ModelDummy;
-import makao.view.actions.MakaoActions;
+import makao.view.actions.ServerActionContainer;
 
 public class Server {
 	private int nextId = 1;
-	private BlockingQueue<String> messages = new LinkedBlockingQueue<>();
+	private BlockingQueue<ServerActionContainer> messages = new LinkedBlockingQueue<>();
 	private final Map<Integer, ClientConnection> clients = new HashMap<>();
 	private final Controller controller;
 	private ServerSocket serverSocket;
@@ -36,9 +36,9 @@ public class Server {
 			public void run() {
 				while (true) {
 					try {
-						String message = messages.take();
+						ServerActionContainer action = messages.take();
 						//System.out.println(message);
-						controller.passActionToModel(message);
+						controller.passActionToModel(action);
 					} catch (InterruptedException ex) {
 
 					}
@@ -130,7 +130,9 @@ public class Server {
 					public void run(){
 						while(clientConnected){
 							try {
-								messages.add(id+": "+(String)in.readObject());
+								ServerActionContainer action = (ServerActionContainer)in.readObject();
+								action.setId(id);
+								messages.add(action);
 							} catch (Exception e) {
 								removeClientConnection(id);
 							}
@@ -149,7 +151,10 @@ public class Server {
 			if (out != null)
 				try {
 					out.writeObject(dummy);
-				} catch (Exception e) {}
+					out.flush();
+				} catch (Exception e) {
+					System.out.println("dupa");
+				}
 		}
 		public void disconnect(){
 			clientConnected = false;

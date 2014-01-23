@@ -3,6 +3,8 @@ package makao.view;
 import java.util.concurrent.BlockingQueue;
 
 import javax.swing.JOptionPane;
+
+import makao.model.ModelDummy;
 import makao.view.actions.MakaoActions;
 
 public class View {
@@ -40,5 +42,8 @@ public class View {
 	}
 	public String getHostAddress(){
 		return configMenuDialog.getHostAddress();
+	}
+	public void drawModelDummy(ModelDummy dummy){
+		
 	}
 }

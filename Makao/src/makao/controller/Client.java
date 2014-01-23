@@ -7,6 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import makao.model.ModelDummy;
+import makao.view.actions.ServerActionContainer;
 
 public class Client {
 	 private Socket socket; 
@@ -54,7 +55,7 @@ public class Client {
 			 public void run(){
 				while (connected) {
 					try {
-						controller.paddModelDummyToView(messages.take());
+						controller.passModelDummyToView(messages.take());
 					} catch (Exception e) {}
 				}
 			 }
@@ -83,10 +84,11 @@ public class Client {
 		 messages.clear();
 	 }
 	 /** Wysy¸a wiadomosc poprzez wczesniej ustanowione po¸ˆczenie */
-	 public void send(String message){
+	 public void send(ServerActionContainer message){
 		 if(out != null)
 			 try{
 				 out.writeObject(message);
+				 out.flush();
 			 }catch(Exception e){
 				 
 			 }

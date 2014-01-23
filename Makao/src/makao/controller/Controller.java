@@ -1,5 +1,6 @@
 package makao.controller;
 
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import makao.MakaoStatic;
@@ -7,6 +8,8 @@ import makao.model.Model;
 import makao.model.ModelDummy;
 import makao.view.View;
 import makao.view.actions.MakaoActions;
+import makao.view.actions.ServerActionContainer;
+import makao.view.actions.ServerActionContainer.ServerActionType;
 
 public class Controller extends Thread{
 	//private final Model model =  null;
@@ -46,7 +49,7 @@ public class Controller extends Thread{
 				case CONNECT_CLIENT:
 					client.setHost(view.getHostAddress());
 					client.connect();
-					client.send("DZIALA");
+					//client.send("DZIALA");
 					break;
 				case DISCONNECT_CLIENT:
 					client.disconnect();
@@ -55,24 +58,25 @@ public class Controller extends Thread{
 						view.addTextMessage("Dziala "+i);
 					break;
 				case GAME_SEND_MESSAGE_TO_ALL:
-					client.send(view.getTextMessage());
+					ServerActionContainer msg = new ServerActionContainer(ServerActionContainer.ServerActionType.SEND_TEXT_MESSAGE, view.getTextMessage());
+					client.send(msg);
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	public void appendMessage(String message){
-		view.addTextMessage(message);
-	}
-	public void paddModelDummyToView(ModelDummy dummy){
-		view.addTextMessage(dummy.getMessage());
+	public void passModelDummyToView(ModelDummy dummy){
+		List l = dummy.getTekstMessages();
+		for(int i=0; i<l.size(); i++)
+			view.addTextMessage(l.get(i).toString());
 	}
 	public void passModelDummy(ModelDummy dummy){
 		server.sendMessageToClients(dummy);
 	}
-	public void passActionToModel(String message){
-		model.doStrategy(message);
+	public void passActionToModel(ServerActionContainer action){
+		if(action.getType() == ServerActionContainer.ServerActionType.SEND_TEXT_MESSAGE)
+		model.doStrategy(action.getId()+": "+(String)action.getData());
 	}
 	
 }
