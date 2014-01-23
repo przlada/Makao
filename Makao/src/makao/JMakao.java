@@ -7,6 +7,8 @@ import makao.controller.Client;
 import makao.controller.Controller;
 import makao.model.Model;
 import makao.view.MainView;
+import makao.view.View;
+import makao.view.actions.MakaoActions;
 
 
 public class JMakao {
@@ -19,8 +21,10 @@ public class JMakao {
 		model.setController(controler);
 		controler.start();
 		*/
-		MainView main = new MainView();
-		main.setVisible(true);
+		final BlockingQueue<MakaoActions> actionQueue = new LinkedBlockingQueue<MakaoActions>();
+		View view = new View(actionQueue);
+		Controller controller = new Controller(view, actionQueue);
+		controller.start();
 		//while(true){}
 		
 		// TODO Auto-generated method stub

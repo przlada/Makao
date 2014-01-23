@@ -6,11 +6,10 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
+import java.util.concurrent.BlockingQueue;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,15 +22,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import makao.MakaoStatic;
+import makao.view.actions.MakaoActions;
 
 
 
 
 public class MainView extends JFrame implements ActionListener{
-	private JTextArea chatTextArea;
-	private JTextField chatTextField;
-	
-	public MainView() {
+	private final BlockingQueue<MakaoActions> actionQueue;
+	private TextMessagePanel rightPanel;
+	public MainView(final BlockingQueue<MakaoActions> actionQueue) {
+		this.actionQueue = actionQueue;
 		setTitle("Makao");
 		setSize(MakaoStatic.MAIN_FRAME_SIZE);
 		setLocationRelativeTo(null);
@@ -88,39 +88,9 @@ public class MainView extends JFrame implements ActionListener{
 		
 		
 		mainPanel.add(panel, BorderLayout.CENTER);
+		rightPanel = new TextMessagePanel(actionQueue);
 		
-		JPanel chatPanel = new JPanel();
-		chatPanel.setLayout(new BorderLayout());
-		chatPanel.setPreferredSize(new Dimension(180, 0));
-		//chatPanel.setBackground(new Color(255,255,50));
-		
-		chatTextArea = new JTextArea(0,10);
-		chatTextArea.setLineWrap(true);
-		chatTextArea.setWrapStyleWord(true);
-		chatTextArea.setColumns(10);
-		chatTextArea.setEditable(false);
-		//JScrollPane chatTextAreaScroll = new JScrollPane(chatTextArea);
-		JScrollPane chatTextAreaScroll = new JScrollPane(chatTextArea);
-		chatTextAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		//chatTextAreaScroll.setPreferredSize(new Dimension(180,200));
-		JPanel chatControll = new JPanel();
-		chatControll.setLayout(new GridLayout(4, 0));
-		//chatControll.setLayout(new BoxLayout(chatControll, BoxLayout.Y_AXIS));
-		chatTextField = new JTextField(20);
-		JButton sendButton = new JButton("Wyælij");
-		JButton makaoButton = new JButton("MAKAO");
-		JButton endTurnButton = new JButton("ZAKOÁCZ KOLEJK¢");
-		sendButton.addActionListener(this);
-		chatControll.add(chatTextField);
-		chatControll.add(sendButton);
-		chatControll.add(makaoButton);
-		chatControll.add(endTurnButton);
-		
-		
-        chatPanel.add(chatTextAreaScroll, BorderLayout.CENTER);
-        chatPanel.add(chatControll, BorderLayout.SOUTH);
-		
-		mainPanel.add(chatPanel, BorderLayout.EAST);
+		mainPanel.add(rightPanel, BorderLayout.EAST);
 		
 		CardDeckPanel cardDock = new CardDeckPanel();
 		cardDock.setBackgroundImage(MakaoStatic.CARD_DOCK_BACKGROUND_IMAGE);
@@ -144,22 +114,13 @@ public class MainView extends JFrame implements ActionListener{
         file.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem eMenuItem = new JMenuItem("Exit", null);
-        JMenuItem eMenuItem2 = new JMenuItem("Po¸ˆcz", null);
-        JMenuItem eMenuItem3 = new JMenuItem("Server", null);
+        JMenuItem eMenuItem2 = new JMenuItem("GRA", null);
         eMenuItem.setMnemonic(KeyEvent.VK_E);
         eMenuItem.setToolTipText("Exit application");
         eMenuItem2.setToolTipText("Po¸ˆcz si« z serwerem gry");
-        eMenuItem3.setToolTipText("Konfiguruj w¸asny server");
         eMenuItem2.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent event) {
-        		ConnectToServerDialog ad = new ConnectToServerDialog();
-                ad.setVisible(true);
-            }
-        });
-        eMenuItem3.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent event) {
-        		ServerConfigDialog ad = new ServerConfigDialog();
-                ad.setVisible(true);
+        		actionQueue.add(MakaoActions.OPEN_CONFIG_DIALOG);
             }
         });
         eMenuItem.addActionListener(new ActionListener() {
@@ -169,7 +130,6 @@ public class MainView extends JFrame implements ActionListener{
         });
 
         file.add(eMenuItem2);
-        file.add(eMenuItem3);
         file.add(eMenuItem);
         
 
@@ -179,12 +139,18 @@ public class MainView extends JFrame implements ActionListener{
 
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		chatTextArea.setText(chatTextArea.getText()+chatTextField.getText()+"\n");
-		chatTextField.setText("");
+		//chatTextArea.setText(chatTextArea.getText()+chatTextField.getText()+"\n");
+		//chatTextField.setText("");
 		AboutDialog ad = new AboutDialog();
         ad.setVisible(true);
+	}
+	
+	public void addTextMessage(String message){
+		rightPanel.addMessage(message); 
+	}
+	public String getTextMessage(){
+		return rightPanel.getMessage();
 	}
 	
 

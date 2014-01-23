@@ -10,16 +10,20 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import makao.view.actions.MakaoActions;
+
 public class Server {
 	private int nextId = 1;
 	private BlockingQueue<String> messages = new LinkedBlockingQueue<>();
 	private final Map<Integer, ClientConnection> clients = new HashMap<>();
+	private final Controller controller;
 	private ServerSocket serverSocket;
 	private final int port;
 	private boolean started = false;
 	
-	public Server(int port){
+	public Server(int port, Controller controller){
 		this.port = port;
+		this.controller = controller;
 	}
 	/** Uruchamia serwer na wybranym wczesniej porcie */
 	public void startServer(){
@@ -33,8 +37,8 @@ public class Server {
 					try {
 						String message = messages.take();
 						System.out.println(message);
-						sendMessageToClients(message);
-						
+						controller.appendMessage(message);
+						//sendMessageToClients(message);
 					} catch (InterruptedException ex) {
 
 					}

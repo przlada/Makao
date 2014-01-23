@@ -9,14 +9,17 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Client {
 	 private Socket socket; 
 	 private final int port;
-	 private final String host;
+	 private String host;
 	 private boolean connected = false;
 	 private ObjectInputStream in;
 	 private ObjectOutputStream out;
 	 private final BlockingQueue<String> messages = new LinkedBlockingQueue<>();
 	 
-	 public Client(String host, int port){
+	 public Client(int port){
 		 this.port = port;
+		 //this.host = host;
+	 }
+	 public void setHost(String host){
 		 this.host = host;
 	 }
 	 /** Nawiˆzuje po¸ˆczenie z serwerem */
