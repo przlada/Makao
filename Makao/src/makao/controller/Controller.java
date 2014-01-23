@@ -12,8 +12,7 @@ public class Controller extends Thread{
 	private final BlockingQueue<MakaoActions> actionQueue;
 	private Server server;
 	private Client client;
-	//Server server = new Server(3456);
-	//server.startServer();
+	
 	public Controller(View view, BlockingQueue<MakaoActions> actionQueue){
 		this.view = view;
 		this.actionQueue = actionQueue;
@@ -56,7 +55,6 @@ public class Controller extends Thread{
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				System.out.println("B¸ˆd");
 			}
 		}
 	}
