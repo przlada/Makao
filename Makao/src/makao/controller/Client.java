@@ -15,7 +15,7 @@ public class Client {
 	 private boolean connected = false;
 	 private ObjectInputStream in;
 	 private ObjectOutputStream out;
-	 private final BlockingQueue<String> messages = new LinkedBlockingQueue<>();
+	 private final BlockingQueue<ModelDummy> messages = new LinkedBlockingQueue<>();
 	 private Controller controller;
 	 
 	 public Client(int port, Controller controller){
@@ -43,7 +43,7 @@ public class Client {
 			 public void run(){
 				while (connected) {
 					try {
-						messages.add((String) in.readObject());
+						messages.add((ModelDummy) in.readObject());
 					} catch (Exception e) {
 						disconnect();
 					}
@@ -54,10 +54,7 @@ public class Client {
 			 public void run(){
 				while (connected) {
 					try {
-						String msg =  messages.take();
-						ModelDummy dummy = new ModelDummy();
-						dummy.setMessage(msg);
-						controller.paddModelDummyToView(dummy);
+						controller.paddModelDummyToView(messages.take());
 					} catch (Exception e) {}
 				}
 			 }

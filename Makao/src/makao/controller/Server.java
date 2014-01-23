@@ -90,7 +90,7 @@ public class Server {
 		synchronized (clients) {
 			for (ClientConnection client : clients.values()){
 				System.out.println("KLIENT "+client.id);
-				client.sendMessage(dummy.getMessage());
+				client.sendMessage(dummy);
 			}
 		}
 	}
@@ -143,6 +143,12 @@ public class Server {
 			if (out != null)
 				try {
 					out.writeObject(message);
+				} catch (Exception e) {}
+		}
+		public void sendMessage(ModelDummy dummy){
+			if (out != null)
+				try {
+					out.writeObject(dummy);
 				} catch (Exception e) {}
 		}
 		public void disconnect(){
