@@ -50,13 +50,13 @@ public class MainView extends JFrame implements ActionListener{
 		panel.add(centerPanel, BorderLayout.CENTER);
 		
 		
-		JPanel leftPlayer = new PlayerPanel();
+		JPanel leftPlayer = new OponentPanel();
 		panel.add(leftPlayer, BorderLayout.WEST);
 		
-		JPanel rightPlayer = new PlayerPanel();
+		JPanel rightPlayer = new OponentPanel();
 		panel.add(rightPlayer, BorderLayout.EAST);
 		
-		JPanel topPlayer = new PlayerPanel();
+		JPanel topPlayer = new OponentPanel();
 		panel.add(topPlayer, BorderLayout.NORTH);
 		
 		
