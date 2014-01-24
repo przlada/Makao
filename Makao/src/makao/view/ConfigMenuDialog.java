@@ -112,5 +112,8 @@ public class ConfigMenuDialog extends JDialog {
 	public String getHostAddress(){
 		return textFieldAdres.getText();
 	}
+	public String getPlayerNick(){
+		return textFieldNick.getText();
+	}
 
 }

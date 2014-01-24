@@ -1,6 +1,8 @@
 package makao.model;
 
-public class MakaoCard {
+import java.io.Serializable;
+
+public class MakaoCard implements Serializable {
 	private final int number;
 	private final int color;
 	/**

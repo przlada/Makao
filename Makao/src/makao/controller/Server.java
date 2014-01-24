@@ -10,11 +10,13 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import makao.exceptions.ToManyPlayersException;
+import makao.model.MakaoPlayer;
 import makao.model.ModelDummy;
 import makao.view.actions.ServerActionContainer;
 
 public class Server {
-	private int nextId = 1;
+	private int nextId = 0;
 	private BlockingQueue<ServerActionContainer> messages = new LinkedBlockingQueue<>();
 	private final Map<Integer, ClientConnection> clients = new HashMap<>();
 	private final Controller controller;
@@ -32,7 +34,7 @@ public class Server {
 			serverSocket = new ServerSocket(port);
 		} catch (Exception e) {}
 		started = true;
-		new Thread() { // odbieranie komunikat√≥w z kolejki
+		new Thread() { // odbieranie informacji od klientów
 			public void run() {
 				while (true) {
 					try {
@@ -45,12 +47,20 @@ public class Server {
 				}
 			}
 		}.start();
-		new Thread() { // akceptowanie po≈ÇƒÖcze≈Ñ
+		new Thread() { // nowe po∏àczenia
 			public void run() {
 				try {
 					while (started) {
-						new ClientConnection(serverSocket.accept(), nextId).connect();
-						++nextId;
+						ClientConnection newClient = new ClientConnection(serverSocket.accept(), nextId);
+						newClient.connect();
+						try{
+							MakaoPlayer player = new MakaoPlayer(nextId);
+							player.setNick("PLAYER1");
+							controller.addPlayer(player);
+							++nextId;
+						}catch(ToManyPlayersException e){
+							newClient.disconnect();
+						}
 					}
 				} catch (IOException e) {
 					throw new RuntimeException(e);

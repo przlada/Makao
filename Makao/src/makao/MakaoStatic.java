@@ -19,6 +19,7 @@ public final class MakaoStatic{
 	public static final ImageIcon LOAD_IMAGE;
 	public static final ImageIcon[][] CARD_ICONS;
 	public static final int PORT_NUMBER = 4321;
+	public static final int MAX_PLAYERS = 4;
 	static{
 		CARD_ICONS = new ImageIcon[4][13];
 		File imageFile = new File("images/card.png");

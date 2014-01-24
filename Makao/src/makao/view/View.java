@@ -5,7 +5,10 @@ import java.util.concurrent.BlockingQueue;
 
 import javax.swing.JOptionPane;
 
+import makao.model.MakaoPlayer;
 import makao.model.ModelDummy;
+import makao.model.TextMessage;
+import makao.model.TextMessage.Type;
 import makao.view.actions.MakaoActions;
 
 public class View {
@@ -44,10 +47,16 @@ public class View {
 	public String getHostAddress(){
 		return configMenuDialog.getHostAddress();
 	}
+	public String getPlayerNick(){
+		return configMenuDialog.getPlayerNick();
+	}
 	public void drawModelDummy(ModelDummy dummy){
 		List l = dummy.getTekstMessages();
 		for(int i=0; i<l.size(); i++){
 			addTextMessage(dummy.getTekstMessages().get(i).toString());
+		}
+		for(MakaoPlayer player : dummy.getPlayers()){
+			addTextMessage("GRACZ "+player.getNick());
 		}
 	}
 }
