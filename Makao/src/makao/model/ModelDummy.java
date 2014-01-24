@@ -7,6 +7,7 @@ import java.util.List;
 public class ModelDummy implements Serializable {
 	private List<TextMessage> tekstMessages;
 	private List<MakaoPlayer> players;
+	private int playerId;
 
 	public List<MakaoPlayer> getPlayers() {
 		return players;
@@ -14,6 +15,13 @@ public class ModelDummy implements Serializable {
 
 	public void setPlayers(List<MakaoPlayer> players) {
 		this.players = players;
+	}
+	
+	public void setPlayerId(int id){
+		playerId = id;
+	}
+	public int getMyId(){
+		return playerId;
 	}
 
 	public ModelDummy() {

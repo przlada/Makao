@@ -5,6 +5,8 @@ import java.util.concurrent.BlockingQueue;
 
 import javax.swing.JOptionPane;
 
+import makao.MakaoStatic;
+import makao.model.MakaoCard;
 import makao.model.MakaoPlayer;
 import makao.model.ModelDummy;
 import makao.model.TextMessage;
@@ -50,6 +52,9 @@ public class View {
 	public String getPlayerNick(){
 		return configMenuDialog.getPlayerNick();
 	}
+	public MakaoCard getSelectedPlayerCard(){
+		return main.getSelectedPlayerCard();
+	}
 	public void drawModelDummy(ModelDummy dummy){
 		List l = dummy.getTekstMessages();
 		for(int i=0; i<l.size(); i++){
@@ -58,5 +63,6 @@ public class View {
 		for(MakaoPlayer player : dummy.getPlayers()){
 			addTextMessage("GRACZ "+player.getNick());
 		}
+		main.drawPlayers(dummy.getMyId(), dummy.getPlayers());
 	}
 }

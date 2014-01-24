@@ -20,6 +20,7 @@ public class Model {
 		this.controller = controller;
 	}
 	public void addPlayer(MakaoPlayer player) throws ToManyPlayersException{
+		System.out.println(players.size()+"");
 		if(players.size() < MakaoStatic.MAX_PLAYERS)
 			players.add(player);
 		else
@@ -31,6 +32,15 @@ public class Model {
 		TextMessage msg = new TextMessage(Type.CHAT_MESSAGE, "autor", message);
 		messages.add(msg);
 		controller.passModelDummy(getDummy());
+	}
+	public void playerSelectCard(int playerId, MakaoCard card){
+		List<MakaoCard> hand = players.get(playerId).getHand();
+		for(int i=0; i<hand.size(); i++)
+			if(hand.get(i).equals(card)){
+				hand.remove(i);
+				controller.passModelDummy(getDummy());
+				return;
+			}
 	}
 	public void setPlayerNick(int id, String nick){
 		try{

@@ -3,6 +3,8 @@ package makao.view;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
@@ -13,9 +15,10 @@ import makao.MakaoStatic;
 import makao.model.MakaoCard;
 import makao.view.actions.MakaoActions;
 
-public class PlayerHandPanel extends JPanel{
+public class PlayerHandPanel extends JPanel implements ActionListener{
 	private final BlockingQueue<MakaoActions> actionQueue;
 	private Image bg = null;
+	private MakaoCard lastCard = null;
 	private List<MakaoCard> hand = null;
 	public PlayerHandPanel(BlockingQueue<MakaoActions> actionQueue){
 		super();
@@ -24,13 +27,15 @@ public class PlayerHandPanel extends JPanel{
 	}
 	public void setHand(List<MakaoCard> hand){
 		this.hand = hand;
+		removeAll();
 		for(int i=0; i<hand.size(); i++){
-			MakaoCard card = hand.get(i);
-			JButton but = new JButton();
-			but.setPreferredSize(MakaoStatic.CARD_SIZE);
-			but.setIcon(MakaoStatic.CARD_ICONS[card.getColor()][card.getNumber()]);
-			add(but);		
+
+			MakaoCardButton cardButton = new MakaoCardButton(hand.get(i));
+			cardButton.addActionListener(this);
+			add(cardButton);
 		}
+		validate();
+		repaint();
 	}
 	
 	public Image getBackgroundImage() {
@@ -55,4 +60,14 @@ public class PlayerHandPanel extends JPanel{
             }
         }
     }
+	
+	public MakaoCard getLastSelectedCard(){
+		return lastCard;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		MakaoCardButton source = (MakaoCardButton)e.getSource();
+		lastCard = source.getMakaoCard();
+    	actionQueue.add(MakaoActions.GAME_SELECT_CARD);
+	}
 }

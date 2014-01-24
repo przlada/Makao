@@ -8,6 +8,7 @@ import java.util.concurrent.BlockingQueue;
 
 import makao.MakaoStatic;
 import makao.exceptions.ToManyPlayersException;
+import makao.model.MakaoCard;
 import makao.model.MakaoPlayer;
 import makao.model.Model;
 import makao.model.ModelDummy;
@@ -69,6 +70,9 @@ public class Controller extends Thread{
 					ServerActionContainer msg = new ServerActionContainer(ServerActionType.SEND_TEXT_MESSAGE, view.getTextMessage());
 					client.send(msg);
 					break;
+				case GAME_SELECT_CARD:
+					client.send(new ServerActionContainer(ServerActionType.PLAYER_SELECT_CARD, view.getSelectedPlayerCard()));
+					break;
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -102,8 +106,12 @@ public class Controller extends Thread{
 		});
 		strategyMap.put(ServerActionType.SET_NICK, new Strategy(){
 			public void doStrategy(ServerActionContainer action){
-				System.out.println("NO CO JEST");
 				model.setPlayerNick(action.getId(), (String)action.getData());
+			}
+		});
+		strategyMap.put(ServerActionType.PLAYER_SELECT_CARD, new Strategy(){
+			public void doStrategy(ServerActionContainer action){
+				model.playerSelectCard(action.getId(), (MakaoCard)action.getData());
 			}
 		});
 	}

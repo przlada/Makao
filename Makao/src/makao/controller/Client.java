@@ -89,20 +89,10 @@ public class Client {
 			 try{
 				 out.writeObject(message);
 				 out.flush();
+				 out.reset();
 			 }catch(Exception e){
 				 
 			 }
 	 }
-	 
-	 /** Pobieranie wiadomosci od serwera. Czeka az pojawi si« wiadomosc */
-	 /*
-	 public String getMessage(){
-		 try{
-			 return messages.take();
-		 }catch(Exception e){
-		 	return null;
-		 }
-	 }
-	 */
 	 
 }

@@ -55,7 +55,6 @@ public class Server {
 						newClient.connect();
 						try{
 							MakaoPlayer player = new MakaoPlayer(nextId);
-							player.setNick("PLAYER1");
 							controller.addPlayer(player);
 							++nextId;
 						}catch(ToManyPlayersException e){
@@ -160,8 +159,10 @@ public class Server {
 		public void sendMessage(ModelDummy dummy){
 			if (out != null)
 				try {
+					dummy.setPlayerId(id);
 					out.writeObject(dummy);
 					out.flush();
+					out.reset();
 				} catch (Exception e) {
 					System.out.println("dupa");
 				}

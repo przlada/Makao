@@ -20,4 +20,15 @@ public class MakaoCard implements Serializable {
 	public int getNumber(){
 		return number;
 	}
+
+	public boolean equals(Object object) {
+		if (this == object)
+			return true;
+		if (!(this.getClass().equals(object.getClass())))
+			return false;
+		MakaoCard card = (MakaoCard) object;
+		if(number ==  card.getNumber() && color == card.getColor())
+			return true;
+		return false;
+	}
 }

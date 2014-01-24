@@ -5,7 +5,8 @@ import java.io.Serializable;
 final public class ServerActionContainer implements Serializable{
 	public enum ServerActionType{
 		SET_NICK,
-		SEND_TEXT_MESSAGE;
+		SEND_TEXT_MESSAGE,
+		PLAYER_SELECT_CARD;
 	}
 	private final Object data;
 	private final ServerActionType type;

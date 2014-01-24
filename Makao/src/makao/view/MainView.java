@@ -27,11 +27,16 @@ import javax.swing.JTextField;
 
 import makao.MakaoStatic;
 import makao.model.MakaoCard;
+import makao.model.MakaoPlayer;
 import makao.view.actions.MakaoActions;
 
 public class MainView extends JFrame implements ActionListener{
 	private final BlockingQueue<MakaoActions> actionQueue;
 	private TextMessagePanel rightPanel;
+	private PlayerHandPanel cardDock;
+	private JScrollPane cardDockScroll;
+	private JPanel panel;
+	private List<OponentPanel> opoenetsPanels = new ArrayList<OponentPanel>();
 	public MainView(final BlockingQueue<MakaoActions> actionQueue) {
 		this.actionQueue = actionQueue;
 		setTitle("Makao");
@@ -40,7 +45,7 @@ public class MainView extends JFrame implements ActionListener{
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		Container mainPanel = getContentPane();
 		mainPanel.setLayout(new BorderLayout());
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		
 		panel.setBackground(MakaoStatic.BACKGROUND_GREEN);
 		panel.setLayout(new BorderLayout());
@@ -49,32 +54,14 @@ public class MainView extends JFrame implements ActionListener{
 		CenterDeckPanel centerPanel = new CenterDeckPanel(actionQueue);
 		panel.add(centerPanel, BorderLayout.CENTER);
 		
-		
-		JPanel leftPlayer = new OponentPanel();
-		panel.add(leftPlayer, BorderLayout.WEST);
-		
-		JPanel rightPlayer = new OponentPanel();
-		panel.add(rightPlayer, BorderLayout.EAST);
-		
-		JPanel topPlayer = new OponentPanel();
-		panel.add(topPlayer, BorderLayout.NORTH);
-		
-		
-		
 		mainPanel.add(panel, BorderLayout.CENTER);
 		rightPanel = new TextMessagePanel(actionQueue);
 		
 		mainPanel.add(rightPanel, BorderLayout.EAST);
 		
-		PlayerHandPanel cardDock = new PlayerHandPanel(actionQueue);
-		List<MakaoCard> hand = new ArrayList<MakaoCard>();
-		for(int i=0; i<13; i++){
-			MakaoCard card = new MakaoCard(i,0);
-			hand.add(card);
-		}
-		Collections.shuffle(hand, new Random());
-		cardDock.setHand(hand);
-		JScrollPane cardDockScroll = new JScrollPane(cardDock);
+		cardDock = new PlayerHandPanel(actionQueue);
+		//cardDock.setHand(hand);
+		cardDockScroll = new JScrollPane(cardDock);
 		cardDock.setAutoscrolls(true);
 		cardDockScroll.setPreferredSize(new Dimension(0,133));
 		mainPanel.add(cardDockScroll, BorderLayout.SOUTH);
@@ -82,6 +69,38 @@ public class MainView extends JFrame implements ActionListener{
 		MainMakaoMenuBar menuBar = new MainMakaoMenuBar(actionQueue);
         setJMenuBar(menuBar);
 
+	}
+	public void drawPlayers(int playerId, List<MakaoPlayer> players){
+		int panelCounter = 0;
+		System.out.println(players.size());
+		for(int i=0; i<players.size(); i++){
+			if(i == playerId)
+				setHand(players.get(i).getHand());
+			else{
+				if(opoenetsPanels.size() <= panelCounter)
+					addOponentPanel(players.get(i).getNick());
+				panelCounter++;
+			}
+				
+		}
+	}
+	private void addOponentPanel(String oponentNick){
+		OponentPanel oponent = new OponentPanel();
+		oponent.setOponentNick(oponentNick);
+		opoenetsPanels.add(oponent);
+		switch(opoenetsPanels.size()){
+		case 1:
+			panel.add(oponent, BorderLayout.WEST);
+			break;
+		case 2:
+			panel.add(oponent, BorderLayout.NORTH);
+			break;
+		case 3:
+			panel.add(oponent, BorderLayout.EAST);
+			break;
+		}
+		panel.validate();
+		panel.repaint();
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -94,6 +113,14 @@ public class MainView extends JFrame implements ActionListener{
 	}
 	public String getTextMessage(){
 		return rightPanel.getMessage();
+	}
+	public void setHand(List<MakaoCard> hand){
+		cardDock.setHand(hand);
+		cardDockScroll.validate();
+		cardDockScroll.repaint();
+	}
+	public MakaoCard getSelectedPlayerCard(){
+		return cardDock.getLastSelectedCard();
 	}
 	
 
