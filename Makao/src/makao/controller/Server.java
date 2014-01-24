@@ -28,6 +28,9 @@ public class Server {
 		this.port = port;
 		this.controller = controller;
 	}
+	public boolean isServerStarted(){
+		return started;
+	}
 	/** Uruchamia serwer na wybranym wczesniej porcie */
 	public void startServer(){
 		try {

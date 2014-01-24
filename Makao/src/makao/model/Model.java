@@ -23,6 +23,12 @@ public class Model {
 	public Model(){
 		
 	}
+	private boolean isThatCardGood(int playerId, MakaoCard card){
+		if(card.getColor() == lastPlayed.getColor() || card.getNumber() == lastPlayed.getNumber())
+			return true;
+		addMessage(TextMessage.getServerMessage(players.get(playerId).getNick(), "Nie mo˝na do∏o˝yç tej karty"));
+		return false;
+	}
 	public void setController(Controller controller){
 		this.controller = controller;
 	}
@@ -31,13 +37,35 @@ public class Model {
 			return 0;
 		return (whoseTurn+1);
 	}
+	private boolean isPlayerTurn(int playerId){
+		if(whoseTurn == playerId)
+			return true;
+		addMessage(TextMessage.getServerMessage(players.get(playerId).getNick(), "Teraz nie kolej gracza"));
+		return false;
+	}
+	private boolean isEndOfGame(int playerId){
+		if(players.get(playerId).getHand().size() == 0){
+			endTheGame(playerId);
+			return true;
+		}
+		else
+			return false;
+	}
+	private void endTheGame(int winnerId){
+		gameStarted = false;
+		addMessage(TextMessage.getServerMessage(players.get(winnerId).getNick(), "KONICE GRY\nWYGRA¸ GRACZ"));
+		controller.passModelDummy(getDummy());
+		controller.gameHaveEnded();
+	}
 	public boolean startGame(){
 		if(players.size() < 1){
 			addMessage(MakaoStatic.notEnoughPlayers);
 			controller.passModelDummy(getDummy());
 			return false;
 		}
+		whoseTurn = 0;
 		gameStarted = true;
+		lastPlayed = null;
 		deck = new  ArrayList<MakaoCard>();
 		graveyard = new  ArrayList<MakaoCard>();
 		
@@ -48,6 +76,7 @@ public class Model {
 		for(MakaoPlayer player : players)
 			for(int i=0; i<MakaoStatic.CARD_HAND_START; i++)
 				player.getHand().add(deck.remove(0));
+		lastPlayed = deck.remove(0);
 		controller.passModelDummy(getDummy());
 		return true;
 	}
@@ -55,8 +84,11 @@ public class Model {
 		messages.add(msg);
 	}
 	public void addPlayer(MakaoPlayer player) throws ToManyPlayersException{
-		if(players.size() < MakaoStatic.MAX_PLAYERS)
+		if(players.size() < MakaoStatic.MAX_PLAYERS){
 			players.add(player);
+			addMessage(TextMessage.getServerMessage(player.getNick(), MakaoStatic.newUserMsg));
+			controller.passModelDummy(getDummy());
+		}
 		else
 			throw new ToManyPlayersException();
 	}
@@ -66,28 +98,49 @@ public class Model {
 		controller.passModelDummy(getDummy());
 	}
 	public void playerSelectCard(int playerId, MakaoCard card){
-		List<MakaoCard> hand = players.get(playerId).getHand();
-		for(int i=0; i<hand.size(); i++)
-			if(hand.get(i).equals(card)){
-				lastPlayed = hand.remove(i);
-				controller.passModelDummy(getDummy());
-				return;
-			}
+		if (!gameStarted) return;
+		if (isPlayerTurn(playerId) && isThatCardGood(playerId, card)) {
+			List<MakaoCard> hand = players.get(playerId).getHand();
+			for (int i = 0; i < hand.size(); i++)
+				if (hand.get(i).equals(card)) {
+					lastPlayed = hand.remove(i);
+					graveyard.add(lastPlayed);
+					controller.passModelDummy(getDummy());
+					break;
+				}
+			isEndOfGame(playerId);
+		} else
+			controller.passModelDummy(getDummy());
 	}
 	public void playerGetNextCard(int playerId){
-		List<MakaoCard> hand = players.get(playerId).getHand();
-		hand.add(new MakaoCard(0,1));
+		if (!gameStarted) return;
+		if (isPlayerTurn(playerId)) {
+			List<MakaoCard> hand = players.get(playerId).getHand();
+			if(deck.size() == 0){
+				System.out.println(graveyard.size()+"skonczyly si´ tasowanie");
+				Collections.shuffle(graveyard);
+				deck = graveyard;
+				graveyard = new  ArrayList<MakaoCard>();
+			}
+			if(deck.size() > 0)
+				hand.add(deck.remove(0));
+		}
 		controller.passModelDummy(getDummy());
 	}
 	public void setPlayerNick(int id, String nick){
-		try{
-			players.get(id).setNick(nick);
-			controller.passModelDummy(getDummy());
-		}catch(IndexOutOfBoundsException e){}
+		if (nick != null && !nick.isEmpty()) {
+			try {
+				players.get(id).setNick(nick);
+				controller.passModelDummy(getDummy());
+			} catch (IndexOutOfBoundsException e) {}
+		}
 	}
 	public void playerEndTurn(int playerId){
-		
-		addMessage(TextMessage.getServerMessage(players.get(getNextPlayer()).getNick(),MakaoStatic.nextRound));
+		if (!gameStarted) return;
+		if (isPlayerTurn(playerId)) {
+			addMessage(TextMessage.getServerMessage(players.get(getNextPlayer()).getNick(), MakaoStatic.nextRound));
+			whoseTurn = getNextPlayer();
+		}
 		controller.passModelDummy(getDummy());
 	}
 	private ModelDummy getDummy(){

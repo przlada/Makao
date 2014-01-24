@@ -93,6 +93,9 @@ public class Controller extends Thread{
 			}
 		});
 	}
+	public void gameHaveEnded(){
+		view.haveToStartGame(true);
+	}
 	public void passModelDummy(final ModelDummy dummy){
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

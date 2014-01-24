@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import makao.MakaoStatic;
+
 public class MakaoPlayer implements Serializable {
 	private int id;
 	private String nick;
@@ -11,6 +13,7 @@ public class MakaoPlayer implements Serializable {
 
 	public MakaoPlayer(int id) {
 		this.id = id;
+		nick = MakaoStatic.defoltPlayerName+(id+1);
 	}
 
 	public String getNick() {

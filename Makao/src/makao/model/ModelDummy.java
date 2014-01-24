@@ -9,9 +9,14 @@ public class ModelDummy implements Serializable {
 	private List<MakaoPlayer> players;
 	private int playerId;
 	private MakaoCard lastPlayed = null;
+	private boolean gameEnded = false;
 	
 	public MakaoCard getLastPlayed() {
 		return lastPlayed;
+	}
+	
+	public boolean isGameEnded(){
+		return gameEnded;
 	}
 
 	public void setLastPlayed(MakaoCard card) {
