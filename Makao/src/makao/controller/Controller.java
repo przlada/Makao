@@ -1,9 +1,6 @@
 package makao.controller;
 
 import java.awt.EventQueue;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 import makao.MakaoStatic;
@@ -12,7 +9,6 @@ import makao.model.ModelDummy;
 import makao.view.View;
 import makao.view.actions.MakaoActions;
 import makao.view.actions.ServerActionContainer;
-import makao.view.actions.ServerActionContainer.ServerActionType;
 
 public class Controller extends Thread{
 	//private final Model model =  null;
