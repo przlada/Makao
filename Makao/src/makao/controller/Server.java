@@ -163,9 +163,7 @@ public class Server {
 					out.writeObject(dummy);
 					out.flush();
 					out.reset();
-				} catch (Exception e) {
-					System.out.println("dupa");
-				}
+				} catch (Exception e) {}
 		}
 		public void disconnect(){
 			clientConnected = false;

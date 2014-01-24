@@ -55,14 +55,13 @@ public class View {
 	public MakaoCard getSelectedPlayerCard(){
 		return main.getSelectedPlayerCard();
 	}
+	public void haveToStartGame(boolean haveTo){
+		main.haveToStartGame(haveTo);
+	}
 	public void drawModelDummy(ModelDummy dummy){
-		List l = dummy.getTekstMessages();
-		for(int i=0; i<l.size(); i++){
-			addTextMessage(dummy.getTekstMessages().get(i).toString());
-		}
-		for(MakaoPlayer player : dummy.getPlayers()){
-			addTextMessage("GRACZ "+player.getNick());
-		}
+		for(TextMessage msg : dummy.getTekstMessages())
+			addTextMessage(msg.toString());
+		main.setNewCard(dummy.getLastPlayed());
 		main.drawPlayers(dummy.getMyId(), dummy.getPlayers());
 	}
 }

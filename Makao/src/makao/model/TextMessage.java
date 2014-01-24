@@ -19,9 +19,12 @@ public class TextMessage implements Serializable {
 
 	public String toString() {
 		if (type == Type.CHAT_MESSAGE)
-			return author + ": " + data;
+			return author + ":\n" + data;
 		else if (type == Type.SERVER_MESSAGE)
-			return "SERWER: " + data;
+			return "SERWER:\n" + data +" "+author;
 		return data;
+	}
+	public static TextMessage getServerMessage(String author, String data){
+		return new TextMessage(Type.SERVER_MESSAGE, author, data);
 	}
 }

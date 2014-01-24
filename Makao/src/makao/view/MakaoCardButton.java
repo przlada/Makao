@@ -20,4 +20,7 @@ public class MakaoCardButton extends JButton{
 	public MakaoCard getMakaoCard(){
 		return card;
 	}
+	public void setMakaoCard(MakaoCard card){
+		setIcon(MakaoStatic.CARD_ICONS[card.getColor()][card.getNumber()]);
+	}
 }

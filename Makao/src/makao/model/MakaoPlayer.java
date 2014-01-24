@@ -11,8 +11,6 @@ public class MakaoPlayer implements Serializable {
 
 	public MakaoPlayer(int id) {
 		this.id = id;
-		for(int i=0; i<13; i++)
-			hand.add(new MakaoCard(i,2));
 	}
 
 	public String getNick() {

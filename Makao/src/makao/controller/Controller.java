@@ -50,21 +50,24 @@ public class Controller extends Thread{
 					break;
 				case START_LOCAL_SERVER:
 					server.startServer();
+					view.haveToStartGame(true);
 					break;
 				case STOP_STOP_SERVER:
 					server.stopServer();
+					break;
+				case SERVER_START_GAME:
+					if(model.startGame())
+						view.haveToStartGame(false);
 					break;
 				case CONNECT_CLIENT:
 					client.setHost(view.getHostAddress());
 					client.connect();
 					client.send(new ServerActionContainer(ServerActionType.SET_NICK, view.getPlayerNick()));
-					//client.send("DZIALA");
 					break;
 				case DISCONNECT_CLIENT:
 					client.disconnect();
 				case GAME_END_MY_TURN:
-					for(int i=0; i<100; i++)
-						view.addTextMessage("Dziala "+i);
+					client.send(new ServerActionContainer(ServerActionType.PLAYER_END_TURN, null));
 					break;
 				case GAME_SEND_MESSAGE_TO_ALL:
 					ServerActionContainer msg = new ServerActionContainer(ServerActionType.SEND_TEXT_MESSAGE, view.getTextMessage());
@@ -72,6 +75,9 @@ public class Controller extends Thread{
 					break;
 				case GAME_SELECT_CARD:
 					client.send(new ServerActionContainer(ServerActionType.PLAYER_SELECT_CARD, view.getSelectedPlayerCard()));
+					break;
+				case GAME_TAKE_NEXT_CARD:
+					client.send(new ServerActionContainer(ServerActionType.PLAYER_GET_NEXT_CARD, null));
 					break;
 				}
 			} catch (InterruptedException e) {
@@ -101,7 +107,7 @@ public class Controller extends Thread{
 	public void makeStrategyMap(){
 		strategyMap.put(ServerActionType.SEND_TEXT_MESSAGE, new Strategy(){
 			public void doStrategy(ServerActionContainer action){
-				model.doStrategy(action.getId()+": "+(String)action.getData());
+				model.doStrategy(action.getId(), (String)action.getData());
 			}
 		});
 		strategyMap.put(ServerActionType.SET_NICK, new Strategy(){
@@ -112,6 +118,16 @@ public class Controller extends Thread{
 		strategyMap.put(ServerActionType.PLAYER_SELECT_CARD, new Strategy(){
 			public void doStrategy(ServerActionContainer action){
 				model.playerSelectCard(action.getId(), (MakaoCard)action.getData());
+			}
+		});
+		strategyMap.put(ServerActionType.PLAYER_GET_NEXT_CARD, new Strategy(){
+			public void doStrategy(ServerActionContainer action){
+				model.playerGetNextCard(action.getId());
+			}
+		});
+		strategyMap.put(ServerActionType.PLAYER_END_TURN, new Strategy(){
+			public void doStrategy(ServerActionContainer action){
+				model.playerEndTurn(action.getId());
 			}
 		});
 	}

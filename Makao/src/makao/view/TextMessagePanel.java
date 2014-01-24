@@ -62,7 +62,6 @@ public class TextMessagePanel extends JPanel {
             }
         });
 		
-		//sendButton.addActionListener(this);
 		chatControll.add(chatTextField);
 		chatControll.add(sendButton);
 		chatControll.add(makaoButton);
@@ -83,6 +82,8 @@ public class TextMessagePanel extends JPanel {
 			endTurnButton.setText("ROZPOCZNIJ GR¢");
 		else
 			endTurnButton.setText("ZAKOÁCZ KOLEJK¢");
+		validate();
+		repaint();
 	}
 	public String getMessage(){
 		String message = chatTextField.getText();

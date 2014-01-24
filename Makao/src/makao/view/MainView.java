@@ -35,6 +35,7 @@ public class MainView extends JFrame implements ActionListener{
 	private TextMessagePanel rightPanel;
 	private PlayerHandPanel cardDock;
 	private JScrollPane cardDockScroll;
+	private CenterDeckPanel centerPanel;
 	private JPanel panel;
 	private List<OponentPanel> opoenetsPanels = new ArrayList<OponentPanel>();
 	public MainView(final BlockingQueue<MakaoActions> actionQueue) {
@@ -51,7 +52,7 @@ public class MainView extends JFrame implements ActionListener{
 		panel.setLayout(new BorderLayout());
 		
 		
-		CenterDeckPanel centerPanel = new CenterDeckPanel(actionQueue);
+		centerPanel = new CenterDeckPanel(actionQueue);
 		panel.add(centerPanel, BorderLayout.CENTER);
 		
 		mainPanel.add(panel, BorderLayout.CENTER);
@@ -107,7 +108,9 @@ public class MainView extends JFrame implements ActionListener{
 		AboutDialog ad = new AboutDialog();
         ad.setVisible(true);
 	}
-	
+	public void haveToStartGame(boolean haveTo){
+		rightPanel.setHaveToStartGame(haveTo);
+	}
 	public void addTextMessage(String message){
 		rightPanel.addMessage(message); 
 	}
@@ -121,6 +124,9 @@ public class MainView extends JFrame implements ActionListener{
 	}
 	public MakaoCard getSelectedPlayerCard(){
 		return cardDock.getLastSelectedCard();
+	}
+	public void setNewCard(MakaoCard card){
+		centerPanel.setNewCard(card);
 	}
 	
 

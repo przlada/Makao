@@ -10,6 +10,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import makao.model.TextMessage;
+import makao.model.TextMessage.Type;
+
 public final class MakaoStatic{
 	public static final Dimension MAIN_FRAME_SIZE = new Dimension(800, 600);
 	public static final Dimension CARD_SIZE = new Dimension(73, 98);
@@ -18,8 +21,15 @@ public final class MakaoStatic{
 	public static final ImageIcon CARD_BACK;
 	public static final ImageIcon LOAD_IMAGE;
 	public static final ImageIcon[][] CARD_ICONS;
+	public static final int MIN_PLAYERS = 2;
 	public static final int PORT_NUMBER = 4321;
 	public static final int MAX_PLAYERS = 4;
+	public static final int CARD_NUMBERS = 13;
+	public static final int CARD_COLORS = 4;
+	public static final int CARD_HAND_START = 5;
+	
+	public static final TextMessage notEnoughPlayers = new TextMessage(Type.SERVER_MESSAGE, null, "Za ma∏o graczy by rozpoczàç gr´");
+	public static final String nextRound ="Kolejk´ rozpoczyna nast´pny gracz";
 	static{
 		CARD_ICONS = new ImageIcon[4][13];
 		File imageFile = new File("images/card.png");

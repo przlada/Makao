@@ -8,6 +8,15 @@ public class ModelDummy implements Serializable {
 	private List<TextMessage> tekstMessages;
 	private List<MakaoPlayer> players;
 	private int playerId;
+	private MakaoCard lastPlayed = null;
+	
+	public MakaoCard getLastPlayed() {
+		return lastPlayed;
+	}
+
+	public void setLastPlayed(MakaoCard card) {
+		lastPlayed = card;
+	}
 
 	public List<MakaoPlayer> getPlayers() {
 		return players;

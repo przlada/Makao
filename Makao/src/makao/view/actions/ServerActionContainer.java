@@ -6,7 +6,9 @@ final public class ServerActionContainer implements Serializable{
 	public enum ServerActionType{
 		SET_NICK,
 		SEND_TEXT_MESSAGE,
-		PLAYER_SELECT_CARD;
+		PLAYER_SELECT_CARD,
+		PLAYER_GET_NEXT_CARD,
+		PLAYER_END_TURN;
 	}
 	private final Object data;
 	private final ServerActionType type;
