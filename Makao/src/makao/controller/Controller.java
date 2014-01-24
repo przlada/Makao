@@ -1,6 +1,9 @@
 package makao.controller;
 
+import java.awt.EventQueue;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 import makao.MakaoStatic;
@@ -15,6 +18,7 @@ public class Controller extends Thread{
 	//private final Model model =  null;
 	private final View view;
 	private final BlockingQueue<MakaoActions> actionQueue;
+	//private final Map<ServerActionContainer.ServerActionType, ServerActionContainer> map = new HashMap<, >();
 	private Server server;
 	private Client client;
 	private Model model;
@@ -66,10 +70,16 @@ public class Controller extends Thread{
 			}
 		}
 	}
-	public void passModelDummyToView(ModelDummy dummy){
-		List l = dummy.getTekstMessages();
-		for(int i=0; i<l.size(); i++)
-			view.addTextMessage(l.get(i).toString());
+	public void passModelDummyToView(final ModelDummy dummy){
+			EventQueue.invokeLater(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					view.drawModelDummy(dummy);
+				}
+
+			});
 	}
 	public void passModelDummy(ModelDummy dummy){
 		server.sendMessageToClients(dummy);

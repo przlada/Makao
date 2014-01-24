@@ -1,5 +1,6 @@
 package makao.view;
 
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import javax.swing.JOptionPane;
@@ -44,6 +45,9 @@ public class View {
 		return configMenuDialog.getHostAddress();
 	}
 	public void drawModelDummy(ModelDummy dummy){
-		
+		List l = dummy.getTekstMessages();
+		for(int i=0; i<l.size(); i++){
+			addTextMessage(dummy.getTekstMessages().get(i).toString());
+		}
 	}
 }
