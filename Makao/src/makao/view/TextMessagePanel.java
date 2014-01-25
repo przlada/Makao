@@ -44,14 +44,14 @@ public class TextMessagePanel extends JPanel {
 		chatControll.setLayout(new GridLayout(4, 0));
 
 		chatTextField = new JTextField(20);
-		sendButton = new JButton("Wyælij");
+		sendButton = new JButton("Wyï¿½lij");
 		makaoButton = new JButton("MAKAO");
 		makaoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	actionQueue.add(MakaoActions.GAME_MAKAO);
             }
         });
-		endTurnButton = new JButton("ZAKOÁCZ KOLEJK¢");
+		endTurnButton = new JButton("ZAKOï¿½CZ KOLEJKï¿½");
 		sendButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	actionQueue.add(MakaoActions.GAME_SEND_MESSAGE_TO_ALL);
@@ -84,9 +84,9 @@ public class TextMessagePanel extends JPanel {
 	public void setHaveToStartGame(boolean haveTo){
 		haveToStartGame = haveTo;
 		if(haveTo)
-			endTurnButton.setText("ROZPOCZNIJ GR¢");
+			endTurnButton.setText("ROZPOCZNIJ GRÄ˜");
 		else
-			endTurnButton.setText("ZAKOÁCZ KOLEJK¢");
+			endTurnButton.setText("ZAKOÅƒCZ KOLEJKÄ˜");
 		validate();
 		repaint();
 	}

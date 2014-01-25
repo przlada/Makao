@@ -29,10 +29,10 @@ public final class MakaoStatic{
 	public static final int CARD_HAND_START = 5;
 	
 	public static final String defoltPlayerName = "GRACZ";
-	public static final TextMessage notEnoughPlayers = new TextMessage(Type.SERVER_MESSAGE, null, "Za ma¸o graczy by rozpoczˆ gr«");
-	public static final String nextRound ="Kolejk« rozpoczyna nast«pny gracz";
+	public static final TextMessage notEnoughPlayers = new TextMessage(Type.SERVER_MESSAGE, null, "Za maÅ‚o graczy by rozpoczÄ…Ä‡ grÄ™");
+	public static final String nextRound ="Kolejka rozpoczyna nastÄ™pny gracz";
 	public static final String notYourTurn = "Teraz nie kolej gracza";
-	public static final String newUserMsg = "Do gry do¸ˆczy¸/a";
+	public static final String newUserMsg = "Do gry doÅ‚Ä…czyÅ‚/a";
 	
 	static{
 		CARD_ICONS = new ImageIcon[4][13];

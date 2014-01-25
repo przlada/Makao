@@ -56,13 +56,13 @@ public class ConfigMenuDialog extends JDialog {
         
         connect.add(Box.createRigidArea(new Dimension(0, 10)));
         JLabel adress = new JLabel("Adres serwera:");
-        JLabel nick = new JLabel("Tw—j nick:");
+        JLabel nick = new JLabel("TwÃ³j nick:");
         
         connect.add(Box.createRigidArea(new Dimension(0, 20)));
         
         textFieldAdres = new JTextField(20);
         textFieldNick = new JTextField(20);
-        connectButton = new JButton("Po¸ˆcz");
+        connectButton = new JButton("PoÅ‚Ä…cz");
         
         connectButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -101,16 +101,16 @@ public class ConfigMenuDialog extends JDialog {
 	public void setConnect(boolean connected){
 		this.connected = connected;
 		if(connected)
-			connectButton.setText("Roz¸ˆcz");
+			connectButton.setText("RozÅ‚Ä…cz");
 		else
-			connectButton.setText("Po¸ˆcz");
+			connectButton.setText("PoÅ‚Ä…cz");
 		validate();
 		repaint();
 	}
 	public void setServerStarted(boolean started){
 		serverStarted = started; 
 		if(started)
-			serverStart.setText("Wy¸ˆcz serwer");
+			serverStart.setText("WyÅ‚Ä…cz serwer");
 		else
 			serverStart.setText("Uruchom serwer");
 		validate();
