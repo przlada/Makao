@@ -220,8 +220,8 @@ public class Model {
 		}
 	}
 	private boolean czyMakao(int playerId){
-		//if(players.get(playerId).getHand().size() == 1 && !seadMakao){
-		if(!seadMakao){
+		if(players.get(playerId).getHand().size() == 1 && !seadMakao){
+		//if(!seadMakao){
 			addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Nie powiedzia¸eæ/aæ makao\nCiˆgniesz 5 kart"));
 			makaoCardToTake+=5;
 			seadMakao = true;
