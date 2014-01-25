@@ -64,9 +64,12 @@ public class Controller extends Thread{
 					break;
 				case CONNECT_CLIENT:
 					client.setHost(view.getHostAddress());
-					client.connect();
-					view.setClientConnected(true);
-					client.send(new ServerActionContainer(ServerActionType.SET_NICK, view.getPlayerNick()));
+					if(client.connect()){
+						view.setClientConnected(true);
+						client.send(new ServerActionContainer(ServerActionType.SET_NICK, view.getPlayerNick()));
+					}
+					else
+						view.addTextMessage("Wystˆpi¸ problem podczas nawiˆzywania po¸ˆczenia");
 					break;
 				case DISCONNECT_CLIENT:
 					client.disconnect();
@@ -99,6 +102,9 @@ public class Controller extends Thread{
 					break;
 				case SHOW_SELECT_CARD_COLOR_DIALOG:
 					view.showSelectCardColorDialog();
+					break;
+				case EXIT_APPLICATION:
+					extiApplication();
 					break;
 				}
 			} catch (InterruptedException e) {
@@ -183,6 +189,11 @@ public class Controller extends Thread{
 		view.setServerStarted(false);
 		view.haveToStartGame(false);
 		model.endGame();
+	}
+	private void extiApplication(){
+		client.disconnect();
+		server.stopServer();
+		System.exit(0);
 	}
 	private interface Strategy {
 		public void doStrategy(ServerActionContainer action);

@@ -19,7 +19,7 @@ public class MainMakaoMenuBar extends JMenuBar {
 		JMenu gameMenu = new JMenu("GRA");
 		// file.setMnemonic(KeyEvent.VK_F);
 
-		JMenuItem eMenuItem = new JMenuItem("Exit", null);
+		JMenuItem eMenuItem = new JMenuItem("WYJÂCIE", null);
 		JMenuItem eMenuItem2 = new JMenuItem("GRA", null);
 		eMenuItem.setMnemonic(KeyEvent.VK_E);
 		eMenuItem.setToolTipText("Koniec");
@@ -31,7 +31,7 @@ public class MainMakaoMenuBar extends JMenuBar {
 		});
 		eMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				System.exit(0);
+				actionQueue.add(MakaoActions.EXIT_APPLICATION);
 			}
 		});
 

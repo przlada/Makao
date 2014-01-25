@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -70,6 +72,12 @@ public class MainView extends JFrame implements ActionListener{
 		
 		MainMakaoMenuBar menuBar = new MainMakaoMenuBar(actionQueue);
         setJMenuBar(menuBar);
+        
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                actionQueue.add(MakaoActions.EXIT_APPLICATION);
+            }
+        });
 
 	}
 	public void clearGame(){
