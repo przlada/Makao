@@ -253,6 +253,7 @@ public class Model {
 				controller.passModelDummy(getDummy());
 			} catch (IndexOutOfBoundsException e) {}
 		}
+		controller.passModelDummy(getDummy());
 	}
 	private boolean czyMakao(int playerId){
 		if(players.get(playerId).getHand().size() == 1 && !seadMakao){

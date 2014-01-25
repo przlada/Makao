@@ -23,7 +23,7 @@ public class SelectCardNumberDialog extends JDialog {
         setSize(500, 180);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(2,0));
-		String[] cardNames = { "nic nie ýˆdam", "piˆtek", "szustek", "siudemek", "—semek", "dziewiˆtek", "dziesiˆtek" };
+		String[] cardNames = { "nic nie ýˆdam", "piˆtek", "sz—stek", "si—demek", "—semek", "dziewiˆtek", "dziesiˆtek" };
 		final int[] values = { 10, 4, 5, 6, 7, 8, 9 };
 
 		petList = new JComboBox(cardNames);

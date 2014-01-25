@@ -73,16 +73,15 @@ public class MainView extends JFrame implements ActionListener{
 	}
 	public void drawPlayers(int playerId, List<MakaoPlayer> players){
 		int panelCounter = 0;
-		System.out.println(players.size());
 		for(int i=0; i<players.size(); i++){
 			if(i == playerId)
 				setHand(players.get(i).getHand());
 			else{
 				if(opoenetsPanels.size() <= panelCounter)
 					addOponentPanel(players.get(i).getNick());
+				opoenetsPanels.get(panelCounter).setOponentNick(players.get(i).getNick());
 				panelCounter++;
 			}
-				
 		}
 	}
 	private void addOponentPanel(String oponentNick){
