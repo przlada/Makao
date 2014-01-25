@@ -46,6 +46,11 @@ public class TextMessagePanel extends JPanel {
 		chatTextField = new JTextField(20);
 		sendButton = new JButton("Wyælij");
 		makaoButton = new JButton("MAKAO");
+		makaoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	actionQueue.add(MakaoActions.GAME_MAKAO);
+            }
+        });
 		endTurnButton = new JButton("ZAKOÁCZ KOLEJK¢");
 		sendButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {

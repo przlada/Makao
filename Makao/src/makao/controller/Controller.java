@@ -81,6 +81,9 @@ public class Controller extends Thread{
 				case GAME_TAKE_NEXT_CARD:
 					client.send(new ServerActionContainer(ServerActionType.PLAYER_GET_NEXT_CARD, null));
 					break;
+				case GAME_MAKAO:
+					client.send(new ServerActionContainer(ServerActionType.PLAYER_SAY_MAKAO, null));
+					break;
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -133,6 +136,11 @@ public class Controller extends Thread{
 		strategyMap.put(ServerActionType.PLAYER_END_TURN, new Strategy(){
 			public void doStrategy(ServerActionContainer action){
 				model.playerEndTurn(action.getId());
+			}
+		});
+		strategyMap.put(ServerActionType.PLAYER_SAY_MAKAO, new Strategy(){
+			public void doStrategy(ServerActionContainer action){
+				model.playerSayMakao(action.getId());
 			}
 		});
 	}
