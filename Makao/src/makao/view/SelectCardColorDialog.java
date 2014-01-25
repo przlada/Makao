@@ -18,7 +18,7 @@ public class SelectCardColorDialog extends JDialog {
 	private MakaoCard card;
 	public SelectCardColorDialog(final BlockingQueue<MakaoActions> actionQueue){
 		this.actionQueue = actionQueue;
-		setTitle("MAKAO WYBIERZ û„DANY KOLOR");
+		setTitle("MAKAO WYBIERZ Å»Ä„DANY KOLOR");
         setResizable(false);
         setSize(500, 180);
         setLocationRelativeTo(null);
@@ -29,7 +29,7 @@ public class SelectCardColorDialog extends JDialog {
 		petList = new JComboBox(cardNames);
 		petList.setSelectedIndex(0);
 		add(petList);
-		JButton request = new JButton("ýˆdam");
+		JButton request = new JButton("Å¼Ä…dam");
 		request.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	card = new MakaoCard(values[petList.getSelectedIndex()], card.getColor());

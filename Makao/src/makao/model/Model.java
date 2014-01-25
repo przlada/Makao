@@ -105,7 +105,7 @@ public class Model {
 		controller.gameHaveEnded();
 	}
 	public boolean startGame(){
-		if(players.size() < 1){
+		if(players.size() < MakaoStatic.MIN_PLAYERS){
 			addMessage(MakaoStatic.notEnoughPlayers);
 			controller.passModelDummy(getDummy());
 			return false;
