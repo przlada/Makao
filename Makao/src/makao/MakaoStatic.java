@@ -30,9 +30,27 @@ public final class MakaoStatic{
 	
 	public static final String defoltPlayerName = "GRACZ";
 	public static final TextMessage notEnoughPlayers = new TextMessage(Type.SERVER_MESSAGE, null, "Za mało graczy by rozpocząć grę");
-	public static final String nextRound ="Kolejka rozpoczyna następny gracz";
-	public static final String notYourTurn = "Teraz nie kolej gracza";
+	public static final String nextRound ="Rozpoczyna następną kolejkę";
 	public static final String newUserMsg = "Do gry dołączył/a";
+	public static final String cantGetAfterChoose = "Nie można dobrać po pobraniu karty";
+	public static final String notGoodCard = "Nie można dołożyć tej karty";
+	public static final String nextPlayerGet = "Następny gracz pobiera";
+	public static final String nextPlayerWait = "Następny gracz czeka";
+	public static final String notYourTurn = "Teraz nie twoja kolej";
+	public static final String endOfTheGameYouWin = "KONIEC GRY\nWYGRYWASZ";
+	public static final String requestColor = "Żądam koloru: ";
+	public static final String requestNumber = "Żądam ";
+	public static final String noRequest = "Nic nie żądam"; 
+	public static final String notThatNumber = "Żądana jest inna figura";
+	public static final String notThatColor = "Żądany jest inny color";
+	public static final String cardAlredyServerd = "Karta już wyłożona";
+	public static final String endToWait = "Nie pobierasz. Zakończ kolejkę żeby czekać ";
+	public static final String cardAlreadyGet = "Karta już pobrana";
+	public static final String rememberToMakao = "Nie powiedziałaś/eś MAKAO\nCiągniesz 5 kart";
+	public static final String moreCardToGet = "Musisz pobrać jeszcze ";
+	public static final String userBlocked = "Jesteś zablokowana/y"; 
+	public static final String sayMakao = "Mówi MAKAO";
+	public static final String enyCardOutOrMoreToGet = "Nie wystawiłaś/eś albo nie pobrałaś/eś karty";
 	
 	static{
 		CARD_ICONS = new ImageIcon[4][13];

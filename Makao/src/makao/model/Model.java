@@ -34,7 +34,7 @@ public class Model {
 	}
 	private boolean isThatCardGood(int playerId, MakaoCard card){
 		if(cardTaken){
-			addMessage(TextMessage.getServerMessage(players.get(playerId).getNick(), "Nie moına do¸oıy po pobraniu karty"));
+			addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.cantGetAfterChoose));
 			return false;
 		}
 		if(firstPlayed == null){
@@ -56,10 +56,10 @@ public class Model {
 			if(card.getNumber() == firstPlayed.getNumber())
 				return true;
 		}
-		addMessage(TextMessage.getServerMessage(players.get(playerId).getNick(), "Nie moına do¸oıy tej karty"));
+		addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.notGoodCard));
 		return false;
 	}
-	private void addCardConsequences(MakaoCard card){
+	private void addCardConsequences(int playerId, MakaoCard card){
 		int initCardToTake = cardToTake;
 		int initRoundsToStay = roundsToStay;
 		if(card.getNumber() == MakaoCard.CARD_NO_2)
@@ -71,10 +71,10 @@ public class Model {
 		else if(card.getNumber() == MakaoCard.CARD_KING && (card.getColor() == MakaoCard.COLOR_HEARTS || card.getColor() == MakaoCard.COLOR_SPADES))
 			cardToTake+=5;
 		if(initCardToTake < cardToTake){
-			addMessage(TextMessage.getServerMessage("", "Nast«pny gracz pobiera "+cardToTake));
+			addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.nextPlayerGet+" "+cardToTake));
 		}
 		if(initRoundsToStay < roundsToStay)
-			addMessage(TextMessage.getServerMessage("", "Nast«pny gracz czeka "+roundsToStay+" kolejek"));
+			addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.nextPlayerWait+" "+roundsToStay+" kolejek"));
 	}
 	public void setController(Controller controller){
 		this.controller = controller;
@@ -87,7 +87,7 @@ public class Model {
 	private boolean isPlayerTurn(int playerId){
 		if(whoseTurn == playerId)
 			return true;
-		addMessage(TextMessage.getServerMessage(players.get(playerId).getNick(), "Teraz nie kolej gracza"));
+		addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.notYourTurn));
 		return false;
 	}
 	private boolean isEndOfGame(int playerId){
@@ -100,7 +100,7 @@ public class Model {
 	}
 	private void endTheGame(int winnerId){
 		gameStarted = false;
-		addMessage(TextMessage.getServerMessage(players.get(winnerId).getNick(), "KONIEC GRY\nWYGRAü GRACZ"));
+		addMessage(TextMessage.getGameMessage(getPlayerNick(winnerId), MakaoStatic.endOfTheGameYouWin));
 		controller.passModelDummy(getDummy());
 		controller.gameHaveEnded();
 	}
@@ -162,7 +162,7 @@ public class Model {
 		MakaoCard nc = new MakaoCard(MakaoCard.CARD_ACE, card.getColor());
 		if (!gameStarted) return;
 		if (isPlayerTurn(playerId) && isThatCardGood(playerId, nc)){
-			addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "ûˆdamy koloru "+MakaoCard.colorToString(card.getNumber())));
+			addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.requestColor+MakaoCard.colorToString(card.getNumber())));
 			requestedColor = card;
 			removeCardFromPlayer(playerId, nc);
 			isEndOfGame(playerId);
@@ -173,11 +173,11 @@ public class Model {
 		if (!gameStarted) return;
 		if (isPlayerTurn(playerId) && isThatCardGood(playerId, nc)){
 			if(card.getNumber() != 10){
-				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Jopek ıˆda "+(card.getNumber()+1)));
+				addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.requestNumber+(card.getNumber()+1)+"-ek"));
 				requestedNumber = card;
 			}
 			else
-				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Jopek nic nie ıˆda"));
+				addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.noRequest));
 			removeCardFromPlayer(playerId, nc);
 			isEndOfGame(playerId);
 		}
@@ -187,7 +187,7 @@ public class Model {
 		for (int i = 0; i < hand.size(); i++)
 			if (hand.get(i).equals(card)) {
 				lastPlayed = hand.remove(i);
-				addCardConsequences(lastPlayed);
+				addCardConsequences(playerId, lastPlayed);
 				graveyard.add(lastPlayed);
 				if (firstPlayed == null)
 					firstPlayed = lastPlayed;
@@ -201,7 +201,7 @@ public class Model {
 		if (isPlayerTurn(playerId)){
 			if(firstPlayed == null && requestedNumber != null){
 				if(card.getNumber() != requestedNumber.getNumber()){
-					addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "ûˆdana inna figura"));
+					addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.notThatNumber));
 					controller.passModelDummy(getDummy());
 				}
 				else{
@@ -212,7 +212,7 @@ public class Model {
 			}
 			else if(firstPlayed == null && requestedColor != null){
 				if(card.getColor() != requestedColor.getNumber() ){
-					addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "ûˆdany inny color"));
+					addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.notThatColor));
 					controller.passModelDummy(getDummy());
 				}
 				else{
@@ -250,13 +250,13 @@ public class Model {
 				makaoCardToTake--;
 			}
 			else if(firstPlayed != null){
-				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Karta juz wy¸oıona"));
+				addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.cardAlredyServerd));
 			}
 			else if(firstPlayed == null && roundsToStay > 0){
-				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Nie pobierasz. ZakoÄcz kolejk« aby czeka "+roundsToStay+" rund"));
+				addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.endToWait+roundsToStay+" rund"));
 			}
 			else if(cardTaken && cardToTake == 0){
-				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Karta juz pobrana"));
+				addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.cardAlreadyGet));
 			} else {
 				hand.add(getCardFromDeck());
 				cardTaken = true;
@@ -277,15 +277,14 @@ public class Model {
 	}
 	private boolean czyMakao(int playerId){
 		if(players.get(playerId).getHand().size() == 1 && !seadMakao){
-		//if(!seadMakao){
-			addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Nie powiedzia¸eæ/aæ makao\nCiˆgniesz 5 kart"));
+			addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.rememberToMakao));
 			makaoCardToTake+=5;
 			seadMakao = true;
 			controller.passModelDummy(getDummy());
 			return true;
 		}
 		else if(makaoCardToTake > 0){
-			addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Musisz pobra jeszcze "+makaoCardToTake+" kart"));
+			addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.moreCardToGet+makaoCardToTake+" kart"));
 			return true;
 		}
 		return false;
@@ -293,19 +292,18 @@ public class Model {
 	private void goToNextTurn(int playerId){
 		while(players.get(getNextPlayer()).isFreez()){
 			whoseTurn = getNextPlayer();
-			addMessage(TextMessage.getServerMessage(getPlayerNick(whoseTurn), "Zablokowany uıytkownik"));
+			addMessage(TextMessage.getGameMessage(getPlayerNick(whoseTurn), MakaoStatic.userBlocked));
 			players.get(whoseTurn).lessFreez();
 		}
 		whoseTurn = getNextPlayer();
-		System.out.println("nast«pna kolej "+whoseTurn);
-		addMessage(TextMessage.getServerMessage(getPlayerNick(whoseTurn),MakaoStatic.nextRound));
+		addMessage(TextMessage.getGameMessage(getPlayerNick(whoseTurn), MakaoStatic.nextRound));
 		firstPlayed = null;
 		cardTaken = false;
 		seadMakao = false;
 		playedBefore = lastPlayed;
 	}
 	public void playerSayMakao(int playerId){
-		addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Makao m—wi gracz"));
+		addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.sayMakao));
 		seadMakao = true;
 		controller.passModelDummy(getDummy());
 	}
@@ -319,7 +317,7 @@ public class Model {
 				goToNextTurn(playerId);
 			}
 			else if( firstPlayed == null && (!cardTaken || cardToTake > 0))
-				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "ûadna karta nie wystawiona albo nie wszystkie pobrane"));
+				addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.enyCardOutOrMoreToGet));
 			else {
 				if(!czyMakao(playerId))
 					goToNextTurn(playerId);
