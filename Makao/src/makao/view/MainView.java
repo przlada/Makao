@@ -131,6 +131,8 @@ public class MainView extends JFrame implements ActionListener{
 	public MakaoCard getRequestedNumber(){
 		return cardDock.getRequestedNumber();
 	}
-	
+	public void setPlayerTurn(boolean isPlayerTurn){
+		cardDock.setPlayerTurn(isPlayerTurn);
+	}
 
 }

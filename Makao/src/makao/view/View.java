@@ -81,5 +81,6 @@ public class View {
 			addTextMessage(msg.toString());
 		main.setNewCard(dummy.getLastPlayed());
 		main.drawPlayers(dummy.getMyId(), dummy.getPlayers());
+		main.setPlayerTurn(dummy.getWhooseTurn() == dummy.getMyId());
 	}
 }

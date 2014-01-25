@@ -20,6 +20,7 @@ public class PlayerHandPanel extends JPanel implements ActionListener{
 	private Image bg = null;
 	private MakaoCard lastCard = null;
 	private List<MakaoCard> hand = null;
+	private boolean isPlayerTurn = false;
 	private MakaoCard requestedNumber = null;
 	public PlayerHandPanel(BlockingQueue<MakaoActions> actionQueue){
 		super();
@@ -62,6 +63,12 @@ public class PlayerHandPanel extends JPanel implements ActionListener{
         }
     }
 	
+	public boolean isPlayerTurn() {
+		return isPlayerTurn;
+	}
+	public void setPlayerTurn(boolean isPlayerTurn) {
+		this.isPlayerTurn = isPlayerTurn;
+	}
 	public MakaoCard getLastSelectedCard(){
 		return lastCard;
 	}
@@ -73,8 +80,10 @@ public class PlayerHandPanel extends JPanel implements ActionListener{
 		MakaoCardButton source = (MakaoCardButton)e.getSource();
 		lastCard = source.getMakaoCard();
 		if(lastCard.getNumber() == 10){
-			requestedNumber = lastCard;
-			actionQueue.add(MakaoActions.SHOW_SELECT_CARD_NUMBER_DIALOG);
+			if(isPlayerTurn){
+				requestedNumber = lastCard;
+				actionQueue.add(MakaoActions.SHOW_SELECT_CARD_NUMBER_DIALOG);
+			}
 		}
 		else
 			actionQueue.add(MakaoActions.GAME_SELECT_CARD);

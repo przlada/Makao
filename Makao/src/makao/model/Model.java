@@ -158,17 +158,15 @@ public class Model {
 		controller.passModelDummy(getDummy());
 	}
 	public void playerRequireNumber(int playerId, MakaoCard card){
-		//int requestedNumber = card.getNumber();
 		MakaoCard nc = new MakaoCard(10, card.getColor());
-		System.out.println("JOPEK "+10+" "+card.getColor());
 		if (!gameStarted) return;
 		if (isPlayerTurn(playerId) && isThatCardGood(playerId, nc)){
-			if(card.getNumber() != 10)
-				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Jopek ýˆda "+card.getNumber()));
+			if(card.getNumber() != 10){
+				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Jopek ýˆda "+(card.getNumber()+1)));
+				requestedNumber = card;
+			}
 			else
 				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Jopek nic nie ýˆda"));
-			requestedNumber = card;
-			//playerSelectCard(playerId, nc);
 			removeCardFromPlayer(playerId, nc);
 			isEndOfGame(playerId);
 			
@@ -313,6 +311,7 @@ public class Model {
 		dummy.setTekstMessages(messages);
 		dummy.setPlayers(players);
 		dummy.setLastPlayed(lastPlayed);
+		dummy.setWhooseTurn(whoseTurn);
 		messages = new ArrayList<TextMessage>();
 		return dummy;
 	}

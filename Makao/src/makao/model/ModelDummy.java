@@ -8,6 +8,7 @@ public class ModelDummy implements Serializable {
 	private List<TextMessage> tekstMessages;
 	private List<MakaoPlayer> players;
 	private int playerId;
+	private int whooseTurn;
 	private MakaoCard lastPlayed = null;
 	private boolean gameEnded = false;
 	
@@ -51,6 +52,14 @@ public class ModelDummy implements Serializable {
 	}
 	public void setTekstMessages(List<TextMessage> messages){
 		this.tekstMessages = messages;
+	}
+
+	public int getWhooseTurn() {
+		return whooseTurn;
+	}
+
+	public void setWhooseTurn(int whooseTurn) {
+		this.whooseTurn = whooseTurn;
 	}
 
 }
