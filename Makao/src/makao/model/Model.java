@@ -15,17 +15,43 @@ public class Model {
 	private List<MakaoPlayer> players = new  ArrayList<MakaoPlayer>();
 	private List<TextMessage> messages = new ArrayList<TextMessage>();
 	private MakaoCard lastPlayed = null;
+	private MakaoCard playedBefore = null;
+	private MakaoCard firstPlayed = null;
 	
 	private List<MakaoCard> deck;
 	private List<MakaoCard> graveyard;
 	private int whoseTurn = 0; 
+	private int cardToTake = 0;
+	private boolean cardTaken = false;
 	private boolean gameStarted = false;
 	public Model(){
 		
 	}
 	private boolean isThatCardGood(int playerId, MakaoCard card){
-		if(card.getColor() == lastPlayed.getColor() || card.getNumber() == lastPlayed.getNumber())
-			return true;
+		if(cardTaken){
+			addMessage(TextMessage.getServerMessage(players.get(playerId).getNick(), "Nie moına do¸oıy po pobraniu karty"));
+			return false;
+		}
+		if(lastPlayed.getNumber() == 2 && (card.getNumber() == 2 || ))
+		if(firstPlayed == null){
+			if(lastPlayed.getNumber() == 1 &&(card.)){
+				
+			}
+			if(card.getColor() == lastPlayed.getColor() || card.getNumber() == lastPlayed.getNumber()){
+				if(card.getNumber() == 2 || card.getNumber() == 1){
+					cardToTake+=card.getNumber()+1;
+					addMessage(TextMessage.getServerMessage("", "Nast«pny gracz ciˆgnie "+cardToTake+" karty"));
+				}
+				else if(card.getNumber() == 12 && (card.getColor() == 1 || card.getColor() == 3)){
+					cardToTake+=5;
+					addMessage(TextMessage.getServerMessage("", "Nast«pny gracz ciˆgnie "+cardToTake+" karty"));
+				}
+				return true;
+			}
+		} else{
+			if(card.getNumber() == firstPlayed.getNumber())
+				return true;
+		}
 		addMessage(TextMessage.getServerMessage(players.get(playerId).getNick(), "Nie moına do¸oıy tej karty"));
 		return false;
 	}
@@ -65,7 +91,10 @@ public class Model {
 		}
 		whoseTurn = 0;
 		gameStarted = true;
+		cardToTake = 0;
+		firstPlayed = null;
 		lastPlayed = null;
+		cardTaken = false;
 		deck = new  ArrayList<MakaoCard>();
 		graveyard = new  ArrayList<MakaoCard>();
 		
@@ -77,6 +106,7 @@ public class Model {
 			for(int i=0; i<MakaoStatic.CARD_HAND_START; i++)
 				player.getHand().add(deck.remove(0));
 		lastPlayed = deck.remove(0);
+		playedBefore = lastPlayed;
 		controller.passModelDummy(getDummy());
 		return true;
 	}
@@ -105,25 +135,38 @@ public class Model {
 				if (hand.get(i).equals(card)) {
 					lastPlayed = hand.remove(i);
 					graveyard.add(lastPlayed);
+					if(firstPlayed == null)
+						firstPlayed = lastPlayed;
 					controller.passModelDummy(getDummy());
 					break;
 				}
 			isEndOfGame(playerId);
-		} else
-			controller.passModelDummy(getDummy());
+		}
+		controller.passModelDummy(getDummy());
+	}
+	private String getPlayerNick(int playerId){
+		return players.get(getNextPlayer()).getNick();
 	}
 	public void playerGetNextCard(int playerId){
 		if (!gameStarted) return;
 		if (isPlayerTurn(playerId)) {
-			List<MakaoCard> hand = players.get(playerId).getHand();
-			if(deck.size() == 0){
-				System.out.println(graveyard.size()+"skonczyly si« tasowanie");
-				Collections.shuffle(graveyard);
-				deck = graveyard;
-				graveyard = new  ArrayList<MakaoCard>();
+			if(cardTaken && cardToTake == 0){
+				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Karta juz pobrana"));
+			} else {
+				List<MakaoCard> hand = players.get(playerId).getHand();
+				if (deck.size() == 0) {
+					System.out.println(graveyard.size()
+							+ "skonczyly si« tasowanie");
+					Collections.shuffle(graveyard);
+					deck = graveyard;
+					graveyard = new ArrayList<MakaoCard>();
+				}
+				if (deck.size() > 0)
+					hand.add(deck.remove(0));
+				cardTaken = true;
+				if(cardToTake > 0)
+					cardToTake--;
 			}
-			if(deck.size() > 0)
-				hand.add(deck.remove(0));
 		}
 		controller.passModelDummy(getDummy());
 	}
@@ -138,8 +181,15 @@ public class Model {
 	public void playerEndTurn(int playerId){
 		if (!gameStarted) return;
 		if (isPlayerTurn(playerId)) {
-			addMessage(TextMessage.getServerMessage(players.get(getNextPlayer()).getNick(), MakaoStatic.nextRound));
-			whoseTurn = getNextPlayer();
+			if( firstPlayed == null && (!cardTaken || cardToTake > 0))
+				addMessage(TextMessage.getServerMessage(getPlayerNick(getNextPlayer()), "ûadna karta nie wystawiona albo nie wszystkie pobrane"));
+			else {
+				addMessage(TextMessage.getServerMessage(players.get(getNextPlayer()).getNick(),MakaoStatic.nextRound));
+				whoseTurn = getNextPlayer();
+				firstPlayed = null;
+				cardTaken = false;
+				playedBefore = lastPlayed;
+			}
 		}
 		controller.passModelDummy(getDummy());
 	}
