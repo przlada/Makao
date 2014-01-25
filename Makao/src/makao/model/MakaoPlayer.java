@@ -17,7 +17,7 @@ public class MakaoPlayer implements Serializable {
 	}
 
 	public boolean isFreez(){
-		return freezRounds > 0;
+		return (freezRounds > 0);
 	}
 	public void setFreezRounds(int freez){
 		freezRounds = freez;

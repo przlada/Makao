@@ -170,7 +170,7 @@ public class Model {
 		controller.passModelDummy(getDummy());
 	}
 	private String getPlayerNick(int playerId){
-		return players.get(getNextPlayer()).getNick();
+		return players.get(playerId).getNick();
 	}
 	public void playerGetNextCard(int playerId){
 		if (!gameStarted) return;
@@ -216,6 +216,7 @@ public class Model {
 			players.get(whoseTurn).lessFreez();
 		}
 		whoseTurn = getNextPlayer();
+		System.out.println("nast«pna kolej "+whoseTurn);
 		addMessage(TextMessage.getServerMessage(getPlayerNick(whoseTurn),MakaoStatic.nextRound));
 		firstPlayed = null;
 		cardTaken = false;
@@ -231,7 +232,7 @@ public class Model {
 				goToNextTurn(playerId);
 			}
 			else if( firstPlayed == null && (!cardTaken || cardToTake > 0))
-				addMessage(TextMessage.getServerMessage(getPlayerNick(getNextPlayer()), "ûadna karta nie wystawiona albo nie wszystkie pobrane"));
+				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "ûadna karta nie wystawiona albo nie wszystkie pobrane"));
 			else {
 				goToNextTurn(playerId);
 			}
