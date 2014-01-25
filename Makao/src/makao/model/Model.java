@@ -22,6 +22,7 @@ public class Model {
 	private List<MakaoCard> graveyard;
 	private int whoseTurn = 0; 
 	private int cardToTake = 0;
+	private int roundsToStay = 0;
 	private boolean cardTaken = false;
 	private boolean gameStarted = false;
 	public Model(){
@@ -32,28 +33,44 @@ public class Model {
 			addMessage(TextMessage.getServerMessage(players.get(playerId).getNick(), "Nie moına do¸oıy po pobraniu karty"));
 			return false;
 		}
-		if(lastPlayed.getNumber() == 2 && (card.getNumber() == 2 || ))
 		if(firstPlayed == null){
-			if(lastPlayed.getNumber() == 1 &&(card.)){
-				
-			}
-			if(card.getColor() == lastPlayed.getColor() || card.getNumber() == lastPlayed.getNumber()){
-				if(card.getNumber() == 2 || card.getNumber() == 1){
-					cardToTake+=card.getNumber()+1;
-					addMessage(TextMessage.getServerMessage("", "Nast«pny gracz ciˆgnie "+cardToTake+" karty"));
-				}
-				else if(card.getNumber() == 12 && (card.getColor() == 1 || card.getColor() == 3)){
-					cardToTake+=5;
-					addMessage(TextMessage.getServerMessage("", "Nast«pny gracz ciˆgnie "+cardToTake+" karty"));
-				}
-				return true;
-			}
+			if(lastPlayed.getNumber() == 11) return true;
+			if(lastPlayed.getNumber() == 1 && card.getNumber() == 1) return true;
+			if(lastPlayed.getNumber() == 1 && card.getNumber() == 2 && card.getColor()==lastPlayed.getColor()) return true;
+			if(lastPlayed.getNumber() == 1 && cardToTake > 0) return false;
+			if(lastPlayed.getNumber() == 2 && card.getNumber() == 2) return true;
+			if(lastPlayed.getNumber() == 2 && card.getNumber() == 1 && card.getColor()==lastPlayed.getColor()) return true;
+			if(lastPlayed.getNumber() == 2 && cardToTake > 0) return false;
+			if(lastPlayed.getNumber() == 3 && (card.getNumber() != 3 && roundsToStay > 0)) return false;
+			if(lastPlayed.getNumber() == 12 && lastPlayed.getColor() == 1 && card.getNumber() == 12 &&  card.getColor() == 3) return true;
+			if(lastPlayed.getNumber() == 12 && lastPlayed.getColor() == 3 && card.getNumber() == 12 &&  card.getColor() == 1) return true;
+			if(lastPlayed.getNumber() == 12 && (lastPlayed.getColor() == 3 || lastPlayed.getColor() == 1) && cardToTake > 0) return false;
+			if(card.getNumber() == 11) return true;
+			if(card.getColor() == lastPlayed.getColor() || card.getNumber() == lastPlayed.getNumber()) return true;
+			return false;
 		} else{
 			if(card.getNumber() == firstPlayed.getNumber())
 				return true;
 		}
 		addMessage(TextMessage.getServerMessage(players.get(playerId).getNick(), "Nie moına do¸oıy tej karty"));
 		return false;
+	}
+	private void addCardConsequences(MakaoCard card){
+		int initCardToTake = cardToTake;
+		int initRoundsToStay = roundsToStay;
+		if(card.getNumber() == 1)
+			cardToTake+=2;
+		else if(card.getNumber() == 2)
+			cardToTake+=3;
+		else if(card.getNumber() == 3)
+			roundsToStay++;
+		else if(card.getNumber() == 12 && (card.getColor() == 1 || card.getColor() == 3))
+			cardToTake+=5;
+		if(initCardToTake < cardToTake){
+			addMessage(TextMessage.getServerMessage("", "Nast«pny gracz pobiera "+cardToTake));
+		}
+		if(initRoundsToStay < roundsToStay)
+			addMessage(TextMessage.getServerMessage("", "Nast«pny gracz czeka "+roundsToStay+" kolejek"));
 	}
 	public void setController(Controller controller){
 		this.controller = controller;
@@ -92,6 +109,7 @@ public class Model {
 		whoseTurn = 0;
 		gameStarted = true;
 		cardToTake = 0;
+		roundsToStay = 0;
 		firstPlayed = null;
 		lastPlayed = null;
 		cardTaken = false;
@@ -134,6 +152,7 @@ public class Model {
 			for (int i = 0; i < hand.size(); i++)
 				if (hand.get(i).equals(card)) {
 					lastPlayed = hand.remove(i);
+					addCardConsequences(lastPlayed);
 					graveyard.add(lastPlayed);
 					if(firstPlayed == null)
 						firstPlayed = lastPlayed;
@@ -150,7 +169,13 @@ public class Model {
 	public void playerGetNextCard(int playerId){
 		if (!gameStarted) return;
 		if (isPlayerTurn(playerId)) {
-			if(cardTaken && cardToTake == 0){
+			if(firstPlayed != null){
+				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Karta juz wy¸oıona"));
+			}
+			else if(firstPlayed == null && roundsToStay > 0){
+				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Nie pobierasz. ZakoÄcz kolejk« aby czeka "+roundsToStay+" rund"));
+			}
+			else if(cardTaken && cardToTake == 0){
 				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Karta juz pobrana"));
 			} else {
 				List<MakaoCard> hand = players.get(playerId).getHand();
@@ -178,17 +203,24 @@ public class Model {
 			} catch (IndexOutOfBoundsException e) {}
 		}
 	}
+	private void goToNextTurn(){
+		addMessage(TextMessage.getServerMessage(players.get(getNextPlayer()).getNick(),MakaoStatic.nextRound));
+		whoseTurn = getNextPlayer();
+		firstPlayed = null;
+		cardTaken = false;
+		playedBefore = lastPlayed;
+	}
 	public void playerEndTurn(int playerId){
 		if (!gameStarted) return;
 		if (isPlayerTurn(playerId)) {
-			if( firstPlayed == null && (!cardTaken || cardToTake > 0))
+			if( firstPlayed == null && roundsToStay > 0){
+				roundsToStay = 0;
+				goToNextTurn();
+			}
+			else if( firstPlayed == null && (!cardTaken || cardToTake > 0))
 				addMessage(TextMessage.getServerMessage(getPlayerNick(getNextPlayer()), "ûadna karta nie wystawiona albo nie wszystkie pobrane"));
 			else {
-				addMessage(TextMessage.getServerMessage(players.get(getNextPlayer()).getNick(),MakaoStatic.nextRound));
-				whoseTurn = getNextPlayer();
-				firstPlayed = null;
-				cardTaken = false;
-				playedBefore = lastPlayed;
+				goToNextTurn();
 			}
 		}
 		controller.passModelDummy(getDummy());
