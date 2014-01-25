@@ -303,9 +303,11 @@ public class Model {
 		playedBefore = lastPlayed;
 	}
 	public void playerSayMakao(int playerId){
-		addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.sayMakao));
-		seadMakao = true;
-		controller.passModelDummy(getDummy());
+		if(players.get(playerId).getHand().size() <= 1){
+			addMessage(TextMessage.getGameMessage(getPlayerNick(playerId), MakaoStatic.sayMakao));
+			seadMakao = true;
+			controller.passModelDummy(getDummy());
+		}
 	}
 	public void playerEndTurn(int playerId){
 		if (!gameStarted) return;
