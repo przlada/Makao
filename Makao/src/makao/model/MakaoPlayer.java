@@ -28,6 +28,10 @@ public class MakaoPlayer implements Serializable {
 	public String getNick() {
 		return nick;
 	}
+	public void resteHand(){
+		hand = null;
+		hand = new ArrayList<MakaoCard>();
+	}
 
 	public void setNick(String nick) {
 		this.nick = nick;

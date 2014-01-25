@@ -20,6 +20,11 @@ public class MakaoCard implements Serializable {
 	public int getNumber(){
 		return number;
 	}
+	public boolean isFightingCard(){
+		if(number < 4 || number > 9)
+			return true;
+		return false;
+	}
 
 	public boolean equals(Object object) {
 		if (this == object)

@@ -120,10 +120,16 @@ public class Model {
 			for(int j=0; j<MakaoStatic.CARD_COLORS; j++)
 				deck.add(new MakaoCard(i,j));
 		Collections.shuffle(deck);
-		for(MakaoPlayer player : players)
+		for(MakaoPlayer player : players){
+			player.resteHand();
 			for(int i=0; i<MakaoStatic.CARD_HAND_START; i++)
 				player.getHand().add(deck.remove(0));
+		}
 		lastPlayed = deck.remove(0);
+		while(lastPlayed.isFightingCard()){
+			graveyard.add(lastPlayed);
+			lastPlayed = deck.remove(0);
+		}
 		playedBefore = lastPlayed;
 		controller.passModelDummy(getDummy());
 		return true;
@@ -203,14 +209,14 @@ public class Model {
 			} catch (IndexOutOfBoundsException e) {}
 		}
 	}
-	private void goToNextTurn(){
-		addMessage(TextMessage.getServerMessage(players.get(getNextPlayer()).getNick(),MakaoStatic.nextRound));
+	private void goToNextTurn(int playerId){
 		while(players.get(getNextPlayer()).isFreez()){
 			whoseTurn = getNextPlayer();
 			addMessage(TextMessage.getServerMessage(getPlayerNick(whoseTurn), "Zablokowany uýytkownik"));
 			players.get(whoseTurn).lessFreez();
 		}
 		whoseTurn = getNextPlayer();
+		addMessage(TextMessage.getServerMessage(getPlayerNick(whoseTurn),MakaoStatic.nextRound));
 		firstPlayed = null;
 		cardTaken = false;
 		playedBefore = lastPlayed;
@@ -220,13 +226,14 @@ public class Model {
 		if (isPlayerTurn(playerId)) {
 			if(firstPlayed == null && roundsToStay > 0){
 				players.get(playerId).setFreezRounds(roundsToStay);
+				players.get(playerId).lessFreez();
 				roundsToStay = 0;
-				goToNextTurn();
+				goToNextTurn(playerId);
 			}
 			else if( firstPlayed == null && (!cardTaken || cardToTake > 0))
 				addMessage(TextMessage.getServerMessage(getPlayerNick(getNextPlayer()), "ûadna karta nie wystawiona albo nie wszystkie pobrane"));
 			else {
-				goToNextTurn();
+				goToNextTurn(playerId);
 			}
 		}
 		controller.passModelDummy(getDummy());
