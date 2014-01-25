@@ -50,6 +50,7 @@ public class Controller extends Thread{
 					break;
 				case START_LOCAL_SERVER:
 					server.startServer();
+					view.setServerStarted(true);
 					view.haveToStartGame(true);
 					break;
 				case STOP_STOP_SERVER:
@@ -62,6 +63,7 @@ public class Controller extends Thread{
 				case CONNECT_CLIENT:
 					client.setHost(view.getHostAddress());
 					client.connect();
+					view.setClientConnected(true);
 					client.send(new ServerActionContainer(ServerActionType.SET_NICK, view.getPlayerNick()));
 					break;
 				case DISCONNECT_CLIENT:

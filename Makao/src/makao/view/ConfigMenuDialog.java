@@ -48,7 +48,8 @@ public class ConfigMenuDialog extends JDialog {
         //serverStart.setEnabled(false);
         serverStart.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-            	actionQueue.add(MakaoActions.START_LOCAL_SERVER);
+            	if(!serverStarted)
+            		actionQueue.add(MakaoActions.START_LOCAL_SERVER);
             }
         });
         server.add(serverStart);
@@ -65,7 +66,8 @@ public class ConfigMenuDialog extends JDialog {
         
         connectButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-            	actionQueue.add(MakaoActions.CONNECT_CLIENT);
+            	if(!connected)
+            		actionQueue.add(MakaoActions.CONNECT_CLIENT);
             }
         });
         
@@ -86,7 +88,7 @@ public class ConfigMenuDialog extends JDialog {
         //setEnabledConnect(true);
         //setEnabledServer(true);
 	}
-	
+	/*
 	public void setEnabledConnect(boolean enable){
 		for (Component component : connect.getComponents())
 			component.setEnabled(enable);
@@ -95,19 +97,24 @@ public class ConfigMenuDialog extends JDialog {
 		for (Component component : server.getComponents())
 			component.setEnabled(enable);
 	}
+	*/
 	public void setConnect(boolean connected){
-		setEnabledServer(!connected);
+		this.connected = connected;
 		if(connected)
-			serverStart.setText("Roz¸ˆcz");
+			connectButton.setText("Roz¸ˆcz");
 		else
-			serverStart.setText("Po¸ˆcz");
+			connectButton.setText("Po¸ˆcz");
+		validate();
+		repaint();
 	}
 	public void setServerStarted(boolean started){
-		setEnabledConnect(!started);
+		serverStarted = started; 
 		if(started)
-			connectButton.setText("Wy¸ˆcz serwer");
+			serverStart.setText("Wy¸ˆcz serwer");
 		else
-			connectButton.setText("Uruchom serwer");
+			serverStart.setText("Uruchom serwer");
+		validate();
+		repaint();
 	}
 	public String getHostAddress(){
 		return textFieldAdres.getText();
@@ -115,5 +122,6 @@ public class ConfigMenuDialog extends JDialog {
 	public String getPlayerNick(){
 		return textFieldNick.getText();
 	}
+	
 
 }

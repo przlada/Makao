@@ -205,6 +205,11 @@ public class Model {
 	}
 	private void goToNextTurn(){
 		addMessage(TextMessage.getServerMessage(players.get(getNextPlayer()).getNick(),MakaoStatic.nextRound));
+		while(players.get(getNextPlayer()).isFreez()){
+			whoseTurn = getNextPlayer();
+			addMessage(TextMessage.getServerMessage(getPlayerNick(whoseTurn), "Zablokowany uýytkownik"));
+			players.get(whoseTurn).lessFreez();
+		}
 		whoseTurn = getNextPlayer();
 		firstPlayed = null;
 		cardTaken = false;
@@ -213,7 +218,8 @@ public class Model {
 	public void playerEndTurn(int playerId){
 		if (!gameStarted) return;
 		if (isPlayerTurn(playerId)) {
-			if( firstPlayed == null && roundsToStay > 0){
+			if(firstPlayed == null && roundsToStay > 0){
+				players.get(playerId).setFreezRounds(roundsToStay);
 				roundsToStay = 0;
 				goToNextTurn();
 			}

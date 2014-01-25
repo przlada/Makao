@@ -58,6 +58,13 @@ public class View {
 	public void haveToStartGame(boolean haveTo){
 		main.haveToStartGame(haveTo);
 	}
+	public void setClientConnected(boolean connected){
+		configMenuDialog.setConnect(connected);
+		configMenuDialog.dispose();
+	}
+	public void setServerStarted(boolean started){
+		configMenuDialog.setServerStarted(started);
+	}
 	public void drawModelDummy(ModelDummy dummy){
 		for(TextMessage msg : dummy.getTekstMessages())
 			addTextMessage(msg.toString());
