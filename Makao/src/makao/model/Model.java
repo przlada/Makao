@@ -141,6 +141,28 @@ public class Model {
 		controller.passModelDummy(getDummy());
 		return true;
 	}
+	public void endGame(){
+		System.out.println("CZYSZCZENIE MODELU");
+		players = new  ArrayList<MakaoPlayer>();
+		messages = new ArrayList<TextMessage>();
+		gameStarted = false;
+		
+		lastPlayed = null;
+		playedBefore = null;
+		firstPlayed = null;
+		
+		List<MakaoCard> deck;
+		List<MakaoCard> graveyard;
+		whoseTurn = 0;  
+		seadMakao = false;
+		cardToTake = 0;
+		makaoCardToTake = 0;
+		roundsToStay = 0;
+		requestedNumber = null;
+		requestedColor = null;
+		cardTaken = false;
+		//controller.passModelDummy(getDummy());
+	}
 	private void addMessage(TextMessage msg){
 		messages.add(msg);
 	}

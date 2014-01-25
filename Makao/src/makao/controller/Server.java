@@ -32,17 +32,18 @@ public class Server {
 		return started;
 	}
 	/** Uruchamia serwer na wybranym wczesniej porcie */
-	public void startServer(){
+	public boolean startServer(){
 		try {
 			serverSocket = new ServerSocket(port);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			return false;
+		}
 		started = true;
 		new Thread() { // odbieranie informacji od klient—w
 			public void run() {
 				while (true) {
 					try {
 						ServerActionContainer action = messages.take();
-						//System.out.println(message);
 						controller.passActionToModel(action);
 					} catch (InterruptedException ex) {
 
@@ -65,11 +66,12 @@ public class Server {
 						}
 					}
 				} catch (IOException e) {
-					throw new RuntimeException(e);
+					stopServer();
+					//throw new RuntimeException(e);
 				}
 			}
 		}.start();
-		
+		return true;
 	}
 	public void stopServer(){
 		started = false;
@@ -77,13 +79,16 @@ public class Server {
 			return;
 		}
 		messages.clear();
+		for (ClientConnection client : clients.values()) {
+			client.disconnect();
+		}
 		try {
 			serverSocket.close();
 		} catch (IOException e) {}
 		serverSocket = null;
-		for (ClientConnection client : clients.values()) {
-			client.disconnect();
-		}
+		nextId =0;
+		clients.clear();
+		controller.serverStoped();
 	}
 	private void addNewClientConnection(ClientConnection newClient){
 		synchronized (clients) {
@@ -101,19 +106,24 @@ public class Server {
 	public void sendMessageToClients(ModelDummy dummy){
 		synchronized (clients) {
 			for (ClientConnection client : clients.values()){
-				System.out.println("KLIENT "+client.id);
 				client.sendMessage(dummy);
 			}
 		}
 	}
 	public void removeClientConnection(int id){
-		System.out.println("USUWANIE GRACZA "+id);
 		synchronized (clients) {
+			for (ClientConnection client : clients.values()){
+				client.disconnect();
+			}
+			clients.clear();
+			/*
 			if (clients.containsKey(id)) {
 				clients.get(id).disconnect();
 				clients.remove(id);
 			}
+			*/
 		}
+		stopServer();
 	}
 	private class ClientConnection{
 		private int id;
@@ -183,9 +193,7 @@ public class Server {
 					socket.close();
 					socket = null;
 				}
-			}catch(Exception e){
-				
-			}
+			}catch(Exception e){}
 		}
 	}
 }

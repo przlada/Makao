@@ -37,6 +37,9 @@ public class View {
 			System.exit(0);
 		}
 	}
+	public void clearView(){
+		main.clearGame();
+	}
 	public void addTextMessage(String message){
 		main.addTextMessage(message);
 	}

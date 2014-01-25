@@ -56,7 +56,9 @@ public class Client {
 				while (connected) {
 					try {
 						controller.passModelDummyToView(messages.take());
-					} catch (Exception e) {}
+					} catch (Exception e) {
+						disconnect();
+					}
 				}
 			 }
 		 }.start();
@@ -78,10 +80,9 @@ public class Client {
 				 socket.close();
 				 socket = null;
 			 }
-		 }catch(Exception e){
-			 
-		 }
+		 }catch(Exception e){}
 		 messages.clear();
+		 controller.clientConnectionLost();
 	 }
 	 /** Wysy¸a wiadomosc poprzez wczesniej ustanowione po¸ˆczenie */
 	 public void send(ServerActionContainer message){
@@ -91,7 +92,7 @@ public class Client {
 				 out.flush();
 				 out.reset();
 			 }catch(Exception e){
-				 
+				 disconnect();
 			 }
 	 }
 	 

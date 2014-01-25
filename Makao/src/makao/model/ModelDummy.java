@@ -12,6 +12,12 @@ public class ModelDummy implements Serializable {
 	private MakaoCard lastPlayed = null;
 	private boolean gameEnded = false;
 	
+	public static ModelDummy getEmpty(){
+		ModelDummy empty = new ModelDummy();
+		empty.setTekstMessages(new ArrayList<TextMessage>());
+		empty.setPlayers(new ArrayList<MakaoPlayer>());
+		return empty;
+	}
 	public MakaoCard getLastPlayed() {
 		return lastPlayed;
 	}

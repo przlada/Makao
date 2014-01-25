@@ -45,11 +45,12 @@ public class ConfigMenuDialog extends JDialog {
         server = new JPanel(new GridLayout(3,0));
         server.add(Box.createRigidArea(new Dimension(0, 10)));
         serverStart = new JButton("Uruchom serwer");
-        //serverStart.setEnabled(false);
         serverStart.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	if(!serverStarted)
             		actionQueue.add(MakaoActions.START_LOCAL_SERVER);
+            	else
+            		actionQueue.add(MakaoActions.STOP_STOP_SERVER);
             }
         });
         server.add(serverStart);
@@ -68,6 +69,8 @@ public class ConfigMenuDialog extends JDialog {
             public void actionPerformed(ActionEvent event) {
             	if(!connected)
             		actionQueue.add(MakaoActions.CONNECT_CLIENT);
+            	else
+            		actionQueue.add(MakaoActions.DISCONNECT_CLIENT);
             }
         });
         
@@ -85,19 +88,8 @@ public class ConfigMenuDialog extends JDialog {
                 actionQueue.add(MakaoActions.CLOSE_CONFIG_DIALOG);
             }
         });
-        //setEnabledConnect(true);
-        //setEnabledServer(true);
 	}
-	/*
-	public void setEnabledConnect(boolean enable){
-		for (Component component : connect.getComponents())
-			component.setEnabled(enable);
-	}
-	public void setEnabledServer(boolean enable){
-		for (Component component : server.getComponents())
-			component.setEnabled(enable);
-	}
-	*/
+
 	public void setConnect(boolean connected){
 		this.connected = connected;
 		if(connected)

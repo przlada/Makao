@@ -71,6 +71,12 @@ public class MainView extends JFrame implements ActionListener{
         setJMenuBar(menuBar);
 
 	}
+	public void clearGame(){
+		opoenetsPanels = new ArrayList<OponentPanel>();
+		panel.removeAll();
+		validate();
+		repaint();
+	}
 	public void drawPlayers(int playerId, List<MakaoPlayer> players){
 		int panelCounter = 0;
 		for(int i=0; i<players.size(); i++){

@@ -18,7 +18,6 @@ import makao.view.actions.ServerActionContainer;
 import makao.view.actions.ServerActionContainer.ServerActionType;
 
 public class Controller extends Thread{
-	//private final Model model =  null;
 	private final View view;
 	private final BlockingQueue<MakaoActions> actionQueue;
 	private final Map<ServerActionContainer.ServerActionType, Strategy> strategyMap = new HashMap<ServerActionContainer.ServerActionType, Strategy>();
@@ -38,7 +37,6 @@ public class Controller extends Thread{
 	{
 		while (true)
 		{
-			System.out.println("controler");
 			try {
 				MakaoActions action = actionQueue.take();
 				switch (action) {
@@ -49,12 +47,16 @@ public class Controller extends Thread{
 					view.closeConfigDialog();
 					break;
 				case START_LOCAL_SERVER:
-					server.startServer();
-					view.setServerStarted(true);
-					view.haveToStartGame(true);
+					if(!server.startServer())
+						view.addTextMessage("Server problem");
+					else{
+						view.setServerStarted(true);
+						view.haveToStartGame(true);
+					}
 					break;
 				case STOP_STOP_SERVER:
 					server.stopServer();
+					view.addTextMessage("Server stoped");
 					break;
 				case SERVER_START_GAME:
 					if(model.startGame())
@@ -68,6 +70,8 @@ public class Controller extends Thread{
 					break;
 				case DISCONNECT_CLIENT:
 					client.disconnect();
+					view.setClientConnected(false);
+					view.addTextMessage("Roz¸ˆczono z serverem");
 				case GAME_END_MY_TURN:
 					client.send(new ServerActionContainer(ServerActionType.PLAYER_END_TURN, null));
 					break;
@@ -168,6 +172,17 @@ public class Controller extends Thread{
 	}
 	public void addPlayer(MakaoPlayer player) throws ToManyPlayersException{
 		model.addPlayer(player);
+	}
+	public void clientConnectionLost(){
+		view.clearView();
+		view.setClientConnected(false);
+		view.drawModelDummy(ModelDummy.getEmpty());
+		view.addTextMessage("Przerwano po¸ˆczenie z serwerem");
+	}
+	public void serverStoped(){
+		view.setServerStarted(false);
+		view.haveToStartGame(false);
+		model.endGame();
 	}
 	private interface Strategy {
 		public void doStrategy(ServerActionContainer action);
