@@ -18,18 +18,18 @@ public class SelectCardNumberDialog extends JDialog {
 	private MakaoCard card;
 	public SelectCardNumberDialog(final BlockingQueue<MakaoActions> actionQueue){
 		this.actionQueue = actionQueue;
-		setTitle("MAKAO WYBIERZ û„DAN„ FIGUR¢");
+		setTitle("MAKAO WYBIERZ Å»Ä„DANÄ„ FIGURÄ˜");
         setResizable(false);
         setSize(500, 180);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(2,0));
-		String[] cardNames = { "nic nie ýˆdam", "piˆtek", "sz—stek", "si—demek", "—semek", "dziewiˆtek", "dziesiˆtek" };
+		String[] cardNames = { "nic nie Å¼Ä…dam", "piÄ…tek", "szÃ³stek", "siÃ³demek", "Ã³semek", "dziewiÄ…tek", "dziesiÄ…tek" };
 		final int[] values = { 10, 4, 5, 6, 7, 8, 9 };
 
 		petList = new JComboBox(cardNames);
 		petList.setSelectedIndex(0);
 		add(petList);
-		JButton request = new JButton("ûˆdam");
+		JButton request = new JButton("Å¼Ä…dam");
 		request.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	card = new MakaoCard(values[petList.getSelectedIndex()],card.getColor());

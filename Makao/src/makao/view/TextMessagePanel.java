@@ -44,14 +44,14 @@ public class TextMessagePanel extends JPanel {
 		chatControll.setLayout(new GridLayout(4, 0));
 
 		chatTextField = new JTextField(20);
-		sendButton = new JButton("Wy�lij");
+		sendButton = new JButton("Wyślij");
 		makaoButton = new JButton("MAKAO");
 		makaoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	actionQueue.add(MakaoActions.GAME_MAKAO);
             }
         });
-		endTurnButton = new JButton("ZAKO�CZ KOLEJK�");
+		endTurnButton = new JButton("ZAKOŃCZ KOLEJKĘ");
 		sendButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	actionQueue.add(MakaoActions.GAME_SEND_MESSAGE_TO_ALL);
