@@ -2,6 +2,7 @@ package makao.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -72,8 +73,10 @@ public class MainView extends JFrame implements ActionListener{
 
 	}
 	public void clearGame(){
+		for(Component comp : opoenetsPanels)
+			panel.remove(comp);
 		opoenetsPanels = new ArrayList<OponentPanel>();
-		panel.removeAll();
+		setHand(new ArrayList<MakaoCard>());
 		validate();
 		repaint();
 	}

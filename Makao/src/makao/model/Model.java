@@ -142,7 +142,6 @@ public class Model {
 		return true;
 	}
 	public void endGame(){
-		System.out.println("CZYSZCZENIE MODELU");
 		players = new  ArrayList<MakaoPlayer>();
 		messages = new ArrayList<TextMessage>();
 		gameStarted = false;
@@ -151,8 +150,6 @@ public class Model {
 		playedBefore = null;
 		firstPlayed = null;
 		
-		List<MakaoCard> deck;
-		List<MakaoCard> graveyard;
 		whoseTurn = 0;  
 		seadMakao = false;
 		cardToTake = 0;
@@ -161,7 +158,6 @@ public class Model {
 		requestedNumber = null;
 		requestedColor = null;
 		cardTaken = false;
-		//controller.passModelDummy(getDummy());
 	}
 	private void addMessage(TextMessage msg){
 		messages.add(msg);
