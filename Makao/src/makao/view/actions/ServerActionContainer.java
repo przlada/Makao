@@ -10,7 +10,8 @@ final public class ServerActionContainer implements Serializable{
 		PLAYER_GET_NEXT_CARD,
 		PLAYER_END_TURN,
 		PLAYER_SAY_MAKAO,
-		PLAYER_REQUIRE_NUMBER;
+		PLAYER_REQUIRE_NUMBER,
+		PLAYER_REQUIRE_COLOR;
 	}
 	private final Object data;
 	private final ServerActionType type;

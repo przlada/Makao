@@ -79,10 +79,16 @@ public class PlayerHandPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		MakaoCardButton source = (MakaoCardButton)e.getSource();
 		lastCard = source.getMakaoCard();
-		if(lastCard.getNumber() == 10){
+		if(lastCard.getNumber() == MakaoCard.CARD_JACK){
 			if(isPlayerTurn){
 				requestedNumber = lastCard;
 				actionQueue.add(MakaoActions.SHOW_SELECT_CARD_NUMBER_DIALOG);
+			}
+		}
+		else if(lastCard.getNumber() == MakaoCard.CARD_ACE){
+			if(isPlayerTurn){
+				requestedNumber = lastCard;
+				actionQueue.add(MakaoActions.SHOW_SELECT_CARD_COLOR_DIALOG);
 			}
 		}
 		else

@@ -25,6 +25,10 @@ public class MakaoCard implements Serializable {
 	public static final int COLOR_HEARTS = 2; //kier
 	public static final int COLOR_SPADES = 1; //pik
 	
+	public static String colorToString(int color){
+		String[] cardNames = { "trefl", "pik", "kier", "karo" };
+		return cardNames[color];
+	}
 	/**
 	 * 
 	 * @param number figura karty

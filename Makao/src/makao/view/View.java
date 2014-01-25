@@ -17,12 +17,14 @@ public class View {
 	private MainView main;
 	private ConfigMenuDialog configMenuDialog;
 	private SelectCardNumberDialog selectCardNumberDialog;
+	private SelectCardColorDialog selectCardColorDialog;
 	private final BlockingQueue<MakaoActions> actionQueue;
 	public View(BlockingQueue<MakaoActions> actionQueue){
 		this.actionQueue = actionQueue;
 		main = new MainView(actionQueue);
 		configMenuDialog = new ConfigMenuDialog(actionQueue);
 		selectCardNumberDialog = new SelectCardNumberDialog(actionQueue);
+		selectCardColorDialog = new SelectCardColorDialog(actionQueue);
 		main.setVisible(true);
 	}
 	
@@ -70,8 +72,14 @@ public class View {
 	public MakaoCard getSelectedCardNumber(){
 		return selectCardNumberDialog.getSelectedCardNumber();
 	}
+	public MakaoCard getSelectedCardColor(){
+		return selectCardColorDialog.getSelectedCardColor();
+	}
 	public void showSelectCardNumberDialog(){
 		selectCardNumberDialog.showSelectCardNumberDialog(getRequestedNumber());
+	}
+	public void showSelectCardColorDialog(){
+		selectCardColorDialog.showSelectCardColorDialog(getRequestedNumber());
 	}
 	public void setServerStarted(boolean started){
 		configMenuDialog.setServerStarted(started);

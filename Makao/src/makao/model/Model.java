@@ -26,6 +26,7 @@ public class Model {
 	private int makaoCardToTake = 0;
 	private int roundsToStay = 0;
 	private MakaoCard requestedNumber = null;
+	private MakaoCard requestedColor = null;
 	private boolean cardTaken = false;
 	private boolean gameStarted = false;
 	public Model(){
@@ -157,6 +158,16 @@ public class Model {
 		messages.add(msg);
 		controller.passModelDummy(getDummy());
 	}
+	public void playerRequireColor(int playerId, MakaoCard card){
+		MakaoCard nc = new MakaoCard(MakaoCard.CARD_ACE, card.getColor());
+		if (!gameStarted) return;
+		if (isPlayerTurn(playerId) && isThatCardGood(playerId, nc)){
+			addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "ûˆdamy koloru "+MakaoCard.colorToString(card.getNumber())));
+			requestedColor = card;
+			removeCardFromPlayer(playerId, nc);
+			isEndOfGame(playerId);
+		}
+	}
 	public void playerRequireNumber(int playerId, MakaoCard card){
 		MakaoCard nc = new MakaoCard(10, card.getColor());
 		if (!gameStarted) return;
@@ -169,7 +180,6 @@ public class Model {
 				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Jopek nic nie ýˆda"));
 			removeCardFromPlayer(playerId, nc);
 			isEndOfGame(playerId);
-			
 		}
 	}
 	private void removeCardFromPlayer(int playerId, MakaoCard card){
@@ -190,13 +200,23 @@ public class Model {
 		if (!gameStarted) return;
 		if (isPlayerTurn(playerId)){
 			if(firstPlayed == null && requestedNumber != null){
-				System.out.println("Z„dana "+requestedNumber.getNumber()+" towja "+card.getNumber());
 				if(card.getNumber() != requestedNumber.getNumber()){
 					addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "ûˆdana inna figura"));
 					controller.passModelDummy(getDummy());
 				}
 				else{
 					requestedNumber = null;
+					removeCardFromPlayer(playerId, card);
+					isEndOfGame(playerId);
+				}
+			}
+			else if(firstPlayed == null && requestedColor != null){
+				if(card.getColor() != requestedColor.getNumber() ){
+					addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "ûˆdany inny color"));
+					controller.passModelDummy(getDummy());
+				}
+				else{
+					requestedColor = null;
 					removeCardFromPlayer(playerId, card);
 					isEndOfGame(playerId);
 				}

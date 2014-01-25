@@ -90,6 +90,12 @@ public class Controller extends Thread{
 				case SHOW_SELECT_CARD_NUMBER_DIALOG:
 					view.showSelectCardNumberDialog();
 					break;
+				case GAME_REQUIRE_COLOR:
+					client.send(new ServerActionContainer(ServerActionType.PLAYER_REQUIRE_COLOR, view.getSelectedCardColor()));
+					break;
+				case SHOW_SELECT_CARD_COLOR_DIALOG:
+					view.showSelectCardColorDialog();
+					break;
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -154,7 +160,11 @@ public class Controller extends Thread{
 				model.playerRequireNumber(action.getId(), (MakaoCard)action.getData());
 			}
 		});
-		
+		strategyMap.put(ServerActionType.PLAYER_REQUIRE_COLOR, new Strategy(){
+			public void doStrategy(ServerActionContainer action){
+				model.playerRequireColor(action.getId(), (MakaoCard)action.getData());
+			}
+		});
 	}
 	public void addPlayer(MakaoPlayer player) throws ToManyPlayersException{
 		model.addPlayer(player);
