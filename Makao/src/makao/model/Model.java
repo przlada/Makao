@@ -61,13 +61,13 @@ public class Model {
 	private void addCardConsequences(MakaoCard card){
 		int initCardToTake = cardToTake;
 		int initRoundsToStay = roundsToStay;
-		if(card.getNumber() == 1)
+		if(card.getNumber() == MakaoCard.CARD_NO_2)
 			cardToTake+=2;
-		else if(card.getNumber() == 2)
+		else if(card.getNumber() == MakaoCard.CARD_NO_3)
 			cardToTake+=3;
-		else if(card.getNumber() == 3)
+		else if(card.getNumber() == MakaoCard.CARD_NO_4)
 			roundsToStay++;
-		else if(card.getNumber() == 12 && (card.getColor() == 1 || card.getColor() == 3))
+		else if(card.getNumber() == MakaoCard.CARD_KING && (card.getColor() == MakaoCard.COLOR_HEARTS || card.getColor() == MakaoCard.COLOR_SPADES))
 			cardToTake+=5;
 		if(initCardToTake < cardToTake){
 			addMessage(TextMessage.getServerMessage("", "Nast«pny gracz pobiera "+cardToTake));
