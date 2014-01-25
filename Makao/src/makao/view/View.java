@@ -16,11 +16,13 @@ import makao.view.actions.MakaoActions;
 public class View {
 	private MainView main;
 	private ConfigMenuDialog configMenuDialog;
+	private SelectCardNumberDialog selectCardNumberDialog;
 	private final BlockingQueue<MakaoActions> actionQueue;
 	public View(BlockingQueue<MakaoActions> actionQueue){
 		this.actionQueue = actionQueue;
 		main = new MainView(actionQueue);
 		configMenuDialog = new ConfigMenuDialog(actionQueue);
+		selectCardNumberDialog = new SelectCardNumberDialog(actionQueue);
 		main.setVisible(true);
 	}
 	
@@ -61,6 +63,15 @@ public class View {
 	public void setClientConnected(boolean connected){
 		configMenuDialog.setConnect(connected);
 		configMenuDialog.dispose();
+	}
+	private MakaoCard getRequestedNumber(){
+		return main.getRequestedNumber();
+	}
+	public MakaoCard getSelectedCardNumber(){
+		return selectCardNumberDialog.getSelectedCardNumber();
+	}
+	public void showSelectCardNumberDialog(){
+		selectCardNumberDialog.showSelectCardNumberDialog(getRequestedNumber());
 	}
 	public void setServerStarted(boolean started){
 		configMenuDialog.setServerStarted(started);

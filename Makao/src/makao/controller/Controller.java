@@ -84,6 +84,12 @@ public class Controller extends Thread{
 				case GAME_MAKAO:
 					client.send(new ServerActionContainer(ServerActionType.PLAYER_SAY_MAKAO, null));
 					break;
+				case GAME_REQUIRE_NUMBER:
+					client.send(new ServerActionContainer(ServerActionType.PLAYER_REQUIRE_NUMBER, view.getSelectedCardNumber()));
+					break;
+				case SHOW_SELECT_CARD_NUMBER_DIALOG:
+					view.showSelectCardNumberDialog();
+					break;
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -143,6 +149,12 @@ public class Controller extends Thread{
 				model.playerSayMakao(action.getId());
 			}
 		});
+		strategyMap.put(ServerActionType.PLAYER_REQUIRE_NUMBER, new Strategy(){
+			public void doStrategy(ServerActionContainer action){
+				model.playerRequireNumber(action.getId(), (MakaoCard)action.getData());
+			}
+		});
+		
 	}
 	public void addPlayer(MakaoPlayer player) throws ToManyPlayersException{
 		model.addPlayer(player);

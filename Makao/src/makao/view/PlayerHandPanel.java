@@ -20,6 +20,7 @@ public class PlayerHandPanel extends JPanel implements ActionListener{
 	private Image bg = null;
 	private MakaoCard lastCard = null;
 	private List<MakaoCard> hand = null;
+	private MakaoCard requestedNumber = null;
 	public PlayerHandPanel(BlockingQueue<MakaoActions> actionQueue){
 		super();
 		this.actionQueue = actionQueue;
@@ -64,10 +65,18 @@ public class PlayerHandPanel extends JPanel implements ActionListener{
 	public MakaoCard getLastSelectedCard(){
 		return lastCard;
 	}
+	public MakaoCard getRequestedNumber(){
+		return requestedNumber;
+	}
 	
 	public void actionPerformed(ActionEvent e) {
 		MakaoCardButton source = (MakaoCardButton)e.getSource();
 		lastCard = source.getMakaoCard();
-    	actionQueue.add(MakaoActions.GAME_SELECT_CARD);
+		if(lastCard.getNumber() == 10){
+			requestedNumber = lastCard;
+			actionQueue.add(MakaoActions.SHOW_SELECT_CARD_NUMBER_DIALOG);
+		}
+		else
+			actionQueue.add(MakaoActions.GAME_SELECT_CARD);
 	}
 }

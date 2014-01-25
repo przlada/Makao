@@ -25,6 +25,7 @@ public class Model {
 	private int cardToTake = 0;
 	private int makaoCardToTake = 0;
 	private int roundsToStay = 0;
+	private MakaoCard requestedNumber = null;
 	private boolean cardTaken = false;
 	private boolean gameStarted = false;
 	public Model(){
@@ -116,6 +117,7 @@ public class Model {
 		lastPlayed = null;
 		makaoCardToTake = 0;
 		cardTaken = false;
+		requestedNumber = null;
 		seadMakao = false;
 		deck = new  ArrayList<MakaoCard>();
 		graveyard = new  ArrayList<MakaoCard>();
@@ -155,23 +157,58 @@ public class Model {
 		messages.add(msg);
 		controller.passModelDummy(getDummy());
 	}
+	public void playerRequireNumber(int playerId, MakaoCard card){
+		//int requestedNumber = card.getNumber();
+		MakaoCard nc = new MakaoCard(10, card.getColor());
+		System.out.println("JOPEK "+10+" "+card.getColor());
+		if (!gameStarted) return;
+		if (isPlayerTurn(playerId) && isThatCardGood(playerId, nc)){
+			if(card.getNumber() != 10)
+				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Jopek ýˆda "+card.getNumber()));
+			else
+				addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "Jopek nic nie ýˆda"));
+			requestedNumber = card;
+			//playerSelectCard(playerId, nc);
+			removeCardFromPlayer(playerId, nc);
+			isEndOfGame(playerId);
+			
+		}
+	}
+	private void removeCardFromPlayer(int playerId, MakaoCard card){
+		List<MakaoCard> hand = players.get(playerId).getHand();
+		for (int i = 0; i < hand.size(); i++)
+			if (hand.get(i).equals(card)) {
+				lastPlayed = hand.remove(i);
+				addCardConsequences(lastPlayed);
+				graveyard.add(lastPlayed);
+				if (firstPlayed == null)
+					firstPlayed = lastPlayed;
+				controller.passModelDummy(getDummy());
+				break;
+			}
+	}
+
 	public void playerSelectCard(int playerId, MakaoCard card){
 		if (!gameStarted) return;
-		if (isPlayerTurn(playerId) && isThatCardGood(playerId, card)) {
-			List<MakaoCard> hand = players.get(playerId).getHand();
-			for (int i = 0; i < hand.size(); i++)
-				if (hand.get(i).equals(card)) {
-					lastPlayed = hand.remove(i);
-					addCardConsequences(lastPlayed);
-					graveyard.add(lastPlayed);
-					if(firstPlayed == null)
-						firstPlayed = lastPlayed;
+		if (isPlayerTurn(playerId)){
+			if(firstPlayed == null && requestedNumber != null){
+				System.out.println("Z„dana "+requestedNumber.getNumber()+" towja "+card.getNumber());
+				if(card.getNumber() != requestedNumber.getNumber()){
+					addMessage(TextMessage.getServerMessage(getPlayerNick(playerId), "ûˆdana inna figura"));
 					controller.passModelDummy(getDummy());
-					break;
 				}
-			isEndOfGame(playerId);
+				else{
+					requestedNumber = null;
+					removeCardFromPlayer(playerId, card);
+					isEndOfGame(playerId);
+				}
+			}
+			else if(isThatCardGood(playerId, card)) {
+				removeCardFromPlayer(playerId, card);
+				isEndOfGame(playerId);
+			}
+			controller.passModelDummy(getDummy());
 		}
-		controller.passModelDummy(getDummy());
 	}
 	private String getPlayerNick(int playerId){
 		return players.get(playerId).getNick();

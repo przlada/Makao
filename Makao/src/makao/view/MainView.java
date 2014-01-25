@@ -128,6 +128,9 @@ public class MainView extends JFrame implements ActionListener{
 	public void setNewCard(MakaoCard card){
 		centerPanel.setNewCard(card);
 	}
+	public MakaoCard getRequestedNumber(){
+		return cardDock.getRequestedNumber();
+	}
 	
 
 }
