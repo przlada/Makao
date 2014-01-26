@@ -18,7 +18,6 @@ import makao.view.actions.ServerActionContainer;
 /** 
  * Klasa s¸uıˆca do za¸oıenia serwera na wybranym porcie
  * @author przemek
- *
  */
 public class Server {
 	private int nextId = 0;
@@ -83,7 +82,6 @@ public class Server {
 					}
 				} catch (IOException e) {
 					stopServer();
-					//throw new RuntimeException(e);
 				}
 			}
 		}.start();
@@ -109,11 +107,19 @@ public class Server {
 		clients.clear();
 		controller.serverStoped();
 	}
+	/**
+	 * Dodawanie nowego po¸ˆczenia z klientem do listy po¸ˆczeÄ 
+	 * @param newClient Obiekt nowego po¸ˆczenia z klientem
+	 */
 	private void addNewClientConnection(ClientConnection newClient){
 		synchronized (clients) {
 			clients.put(newClient.id, newClient);
 		}
 	}
+	/**
+	 * Rozes¸anie wszystkim klientom wiadomoæci tekstowej
+	 * @param message Treæ wiadomoæci
+	 */
 	public void sendMessageToClients(String message){
 		synchronized (clients) {
 			for (ClientConnection client : clients.values()){
@@ -122,6 +128,10 @@ public class Server {
 			}
 		}
 	}
+	/**
+	 * Rozes¸anie wszystkim klientom wiadomoæci
+	 * @param dummy Obiekt makiet modelu do wys¸ania 
+	 */
 	public void sendMessageToClients(ModelDummy dummy){
 		synchronized (clients) {
 			for (ClientConnection client : clients.values()){
@@ -129,32 +139,40 @@ public class Server {
 			}
 		}
 	}
+	/**
+	 * Usuni«cie po¸ˆczenia z klientem
+	 * @param id Id klienta do usuni«cia
+	 */
 	public void removeClientConnection(int id){
 		synchronized (clients) {
 			for (ClientConnection client : clients.values()){
 				client.disconnect();
 			}
 			clients.clear();
-			/*
-			if (clients.containsKey(id)) {
-				clients.get(id).disconnect();
-				clients.remove(id);
-			}
-			*/
 		}
 		stopServer();
 	}
+	/**
+	 * Wewn«trzna klasa nowego po¸ˆczenia z klientem
+	 */
 	private class ClientConnection{
 		private int id;
 		private Socket socket;
 		private ObjectInputStream in;
 		private ObjectOutputStream out;
 		private boolean clientConnected = false;
-		
+		/**
+		 * Tworzenie nowego po¸ˆczenia z klientem
+		 * @param socket Po¸ˆczenie nawiˆzane z klientem
+		 * @param id Id przypisane do nowego klienta
+		 */
 		public ClientConnection(Socket socket, int id){
 			this.id = id;
 			this.socket = socket;
 		}
+		/**
+		 * Nawiˆzanie po¸ˆczenia z klientem
+		 */
 		public void connect(){
 			if(socket != null && !socket.isClosed()){
 				try{
@@ -182,12 +200,20 @@ public class Server {
 				}.start();
 			}
 		}
+		/**
+		 * Wys¸anie wiadomoæci do klienta 
+		 * @param message Treæ wiadomoæci
+		 */
 		public void sendMessage(String message){
 			if (out != null)
 				try {
 					out.writeObject(message);
 				} catch (Exception e) {}
 		}
+		/**
+		 * Wys¸anie wiadomoæci do klienta
+		 * @param dummy Treæ wiadomoæci
+		 */
 		public void sendMessage(ModelDummy dummy){
 			if (out != null)
 				try {
@@ -197,6 +223,9 @@ public class Server {
 					out.reset();
 				} catch (Exception e) {}
 		}
+		/**
+		 * ZakoÄczenie po¸ˆczenia z klientem
+		 */
 		public void disconnect(){
 			clientConnected = false;
 			try{
