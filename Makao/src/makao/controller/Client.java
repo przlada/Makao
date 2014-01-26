@@ -9,6 +9,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import makao.model.ModelDummy;
 import makao.view.actions.ServerActionContainer;
 
+/**
+ * Klasa Klient do obs∏ugi komunikacji klienta z serwerem
+ * @author przemek
+ *
+ */
 public class Client {
 	 private Socket socket; 
 	 private final int port;
@@ -18,15 +23,26 @@ public class Client {
 	 private ObjectOutputStream out;
 	 private final BlockingQueue<ModelDummy> messages = new LinkedBlockingQueue<>();
 	 private Controller controller;
-	 
+	 /**
+	  * Tworzenie nowego klienta 
+	  * @param port Numer portu serwera
+	  * @param controller Obiekt kontrolera
+	  */
 	 public Client(int port, Controller controller){
 		 this.port = port;
 		 this.controller = controller;
 	 }
+	 /**
+	  * Ustawienie serwera z jakim chcemy si´ po∏àczyç 
+	  * @param host adres serwera
+	  */
 	 public void setHost(String host){
 		 this.host = host;
 	 }
-	 /** Nawiàzuje po∏àczenie z serwerem */
+	 /**
+	  * Nawià˝ po∏àczenia 
+	  * @return zwraca prawd´ j´Êli po∏àczono z serwerem
+	  */
 	 public boolean connect(){
 		 try{
 			 socket = new Socket(host, port);
