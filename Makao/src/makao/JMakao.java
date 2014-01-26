@@ -13,7 +13,6 @@ import makao.view.actions.MakaoActions;
  */
 public class JMakao {
 	public static void main(String[] args) {
-		
 		final BlockingQueue<MakaoActions> actionQueue = new LinkedBlockingQueue<MakaoActions>();
 		View view = new View(actionQueue);
 		Model model = new Model();

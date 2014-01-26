@@ -13,6 +13,11 @@ import javax.swing.ImageIcon;
 import makao.model.TextMessage;
 import makao.model.TextMessage.Type;
 
+/**
+ * Klasa przechowująca dane konfiguracyjne oraz wszelkie stałe programu
+ * @author przemek
+ *
+ */
 public final class MakaoStatic{
 	public static final Dimension MAIN_FRAME_SIZE = new Dimension(800, 600);
 	public static final Dimension CARD_SIZE = new Dimension(73, 98);
