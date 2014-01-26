@@ -39,13 +39,13 @@ public class Model {
 		}
 		if(firstPlayed == null){
 			if(lastPlayed.getNumber() == MakaoCard.CARD_QUEEN) return true;
-			if(lastPlayed.getNumber() == 1 && card.getNumber() == 1) return true;
-			if(lastPlayed.getNumber() == 1 && card.getNumber() == 2 && card.getColor()==lastPlayed.getColor()) return true;
-			if(lastPlayed.getNumber() == 1 && cardToTake > 0) return false;
-			if(lastPlayed.getNumber() == 2 && card.getNumber() == 2) return true;
-			if(lastPlayed.getNumber() == 2 && card.getNumber() == 1 && card.getColor()==lastPlayed.getColor()) return true;
-			if(lastPlayed.getNumber() == 2 && cardToTake > 0) return false;
-			if(lastPlayed.getNumber() == 3 && (card.getNumber() != 3 && roundsToStay > 0)) return false;
+			if(lastPlayed.getNumber() == MakaoCard.CARD_NO_2 && card.getNumber() == MakaoCard.CARD_NO_2) return true;
+			if(lastPlayed.getNumber() == MakaoCard.CARD_NO_2 && card.getNumber() == MakaoCard.CARD_NO_3 && card.getColor()==lastPlayed.getColor()) return true;
+			if(lastPlayed.getNumber() == MakaoCard.CARD_NO_2 && cardToTake > 0) return false;
+			if(lastPlayed.getNumber() == MakaoCard.CARD_NO_3 && card.getNumber() == MakaoCard.CARD_NO_3) return true;
+			if(lastPlayed.getNumber() == MakaoCard.CARD_NO_3 && card.getNumber() == MakaoCard.CARD_NO_2 && card.getColor()==lastPlayed.getColor()) return true;
+			if(lastPlayed.getNumber() == MakaoCard.CARD_NO_3 && cardToTake > 0) return false;
+			if(lastPlayed.getNumber() == MakaoCard.CARD_NO_4 && (card.getNumber() != MakaoCard.CARD_NO_4 && roundsToStay > 0)) return false;
 			if(lastPlayed.getNumber() == MakaoCard.CARD_KING && lastPlayed.getColor() == MakaoCard.COLOR_SPADES && card.getNumber() == MakaoCard.CARD_KING &&  card.getColor() == MakaoCard.COLOR_HEARTS) return true;
 			if(lastPlayed.getNumber() == MakaoCard.CARD_KING && lastPlayed.getColor() == MakaoCard.COLOR_HEARTS && card.getNumber() == MakaoCard.CARD_KING &&  card.getColor() == MakaoCard.COLOR_SPADES) return true;
 			if(lastPlayed.getNumber() == MakaoCard.CARD_KING && (lastPlayed.getColor() == MakaoCard.COLOR_HEARTS || lastPlayed.getColor() == MakaoCard.COLOR_SPADES) && cardToTake > 0) return false;
