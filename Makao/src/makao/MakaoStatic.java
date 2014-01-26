@@ -51,6 +51,7 @@ public final class MakaoStatic{
 	public static final String userBlocked = "Jesteś zablokowana/y"; 
 	public static final String sayMakao = "Mówi MAKAO";
 	public static final String enyCardOutOrMoreToGet = "Nie wystawiłaś/eś albo nie pobrałaś/eś karty";
+	public static final String serverConnectioLost = "Przerwano połączenie z serwerem";
 	
 	static{
 		CARD_ICONS = new ImageIcon[4][13];
