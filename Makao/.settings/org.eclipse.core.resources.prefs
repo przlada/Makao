@@ -6,6 +6,7 @@ encoding//src/makao/controller/Server.java=UTF-8
 encoding//src/makao/exceptions/GameException.java=UTF-8
 encoding//src/makao/exceptions/ToManyPlayersException.java=UTF-8
 encoding//src/makao/model/MakaoCard.java=UTF-8
+encoding//src/makao/model/MakaoPlayer.java=UTF-8
 encoding//src/makao/model/Model.java=UTF-8
 encoding//src/makao/model/TextMessage.java=UTF-8
 encoding//src/makao/view/ConfigMenuDialog.java=UTF-8
