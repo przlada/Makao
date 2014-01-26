@@ -15,6 +15,11 @@ import makao.model.MakaoPlayer;
 import makao.model.ModelDummy;
 import makao.view.actions.ServerActionContainer;
 
+/** 
+ * Klasa s¸uıˆca do za¸oıenia serwera na wybranym porcie
+ * @author przemek
+ *
+ */
 public class Server {
 	private int nextId = 0;
 	private BlockingQueue<ServerActionContainer> messages = new LinkedBlockingQueue<>();
@@ -23,15 +28,26 @@ public class Server {
 	private ServerSocket serverSocket;
 	private final int port;
 	private boolean started = false;
-	
+	/**
+	 * Tworzenie nowego serwera
+	 * @param port Port na jakim ma dzia¸a serwer
+	 * @param controller Kontroler do kr—tego przekazywane b«dˆ wszelkie akcje
+	 */
 	public Server(int port, Controller controller){
 		this.port = port;
 		this.controller = controller;
 	}
+	/**
+	 * 
+	 * @return zwraca prawd« jeæli serwer zosta¸ uruchomiony
+	 */
 	public boolean isServerStarted(){
 		return started;
 	}
-	/** Uruchamia serwer na wybranym wczesniej porcie */
+	/**
+	 * Start serwera
+	 * @return zwraca prawd« jeæli uruchomienie sewera przebieg¸o bez problemu
+	 */
 	public boolean startServer(){
 		try {
 			serverSocket = new ServerSocket(port);
@@ -39,7 +55,7 @@ public class Server {
 			return false;
 		}
 		started = true;
-		new Thread() { // odbieranie informacji od klient—w
+		new Thread() { // wˆtek zarzˆdzajˆcy odebranymi danymi
 			public void run() {
 				while (true) {
 					try {
@@ -51,7 +67,7 @@ public class Server {
 				}
 			}
 		}.start();
-		new Thread() { // nowe po¸ˆczenia
+		new Thread() { // wˆtek obs¸ugi nowych po¸ˆczeÄ
 			public void run() {
 				try {
 					while (started) {
@@ -73,6 +89,9 @@ public class Server {
 		}.start();
 		return true;
 	}
+	/**
+	 * Zatrzymanie serwera
+	 */
 	public void stopServer(){
 		started = false;
 		if (serverSocket == null) {

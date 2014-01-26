@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/makao/MakaoStatic.java=UTF-8
+encoding//src/makao/controller/Server.java=UTF-8
 encoding//src/makao/model/Model.java=UTF-8
 encoding//src/makao/model/TextMessage.java=UTF-8
 encoding//src/makao/view/ConfigMenuDialog.java=UTF-8
