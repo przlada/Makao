@@ -10,7 +10,7 @@ import makao.model.ModelDummy;
 import makao.view.actions.ServerActionContainer;
 
 /**
- * Klasa Klient do obs¸ugi komunikacji klienta z serwerem
+ * Klasa Klient do obsÅ‚ugi komunikacji klienta z serwerem
  * @author przemek
  *
  */
@@ -33,15 +33,15 @@ public class Client {
 		 this.controller = controller;
 	 }
 	 /**
-	  * Ustawienie serwera z jakim chcemy si« po¸ˆczy 
+	  * Ustawienie serwera z jakim chcemy siÄ™ poÅ‚Ä…czyÄ‡ 
 	  * @param host adres serwera
 	  */
 	 public void setHost(String host){
 		 this.host = host;
 	 }
 	 /**
-	  * Nawiˆı po¸ˆczenia 
-	  * @return zwraca prawd« j«æli po¸ˆczono z serwerem
+	  * NawiÄ…Å¼ poÅ‚Ä…czenia 
+	  * @return zwraca prawdÄ™ jÄ™Å›li poÅ‚Ä…czono z serwerem
 	  */
 	 public boolean connect(){
 		 try{
@@ -80,7 +80,7 @@ public class Client {
 		 }.start();
 		 return true;
 	 }
-	 /** KoÄczy po¸ˆczenie */
+	 /** KoÅ„czy poÅ‚Ä…czenie */
 	 public void disconnect(){
 		 connected = false;
 		 try{
@@ -100,7 +100,7 @@ public class Client {
 		 messages.clear();
 		 controller.clientConnectionLost();
 	 }
-	 /** Wysy¸a wiadomosc poprzez wczesniej ustanowione po¸ˆczenie */
+	 /** WysyÅ‚a wiadomosc poprzez wczesniej ustanowione poÅ‚Ä…czenie */
 	 public void send(ServerActionContainer message){
 		 if(out != null)
 			 try{

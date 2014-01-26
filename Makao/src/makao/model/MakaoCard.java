@@ -1,7 +1,10 @@
 package makao.model;
 
 import java.io.Serializable;
-
+/**
+ * Klasa reprezentująca katę do gry
+ * @author przemek
+ */
 public class MakaoCard implements Serializable {
 	private final int number;
 	private final int color;
@@ -30,7 +33,7 @@ public class MakaoCard implements Serializable {
 		return cardNames[color];
 	}
 	/**
-	 * 
+	 * Tworzenie nowej karty
 	 * @param number figura karty
 	 * @param color color karty
 	 */
@@ -44,12 +47,18 @@ public class MakaoCard implements Serializable {
 	public int getNumber(){
 		return number;
 	}
+	/**
+	 * Czy karta jest waleczna
+	 * @return zwraca prawdę jęśli jest
+	 */
 	public boolean isFightingCard(){
 		if(number < 4 || number > 9)
 			return true;
 		return false;
 	}
-
+	/**
+	 * Porównywanie dwóch kart
+	 */
 	public boolean equals(Object object) {
 		if (this == object)
 			return true;
